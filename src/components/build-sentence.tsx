@@ -147,7 +147,7 @@ export function BuildSentence({ items = sentenceItems, onFinish }: BuildSentence
               type="button"
               disabled={checked}
               onClick={() => setPlaced((current) => [...current, chip])}
-              className={`${chipClass} bg-white text-navy-900 shadow-[0_0_0_1px_rgb(10_31_60/0.1),0_2px_4px_-1px_rgb(10_31_60/0.08)] hover:bg-ice-50`}
+              className={`${chipClass} bg-white text-navy-900 shadow-[0_0_0_1px_var(--edge),0_2px_4px_-1px_var(--edge)] hover:bg-ice-50`}
             >
               {chip.word}
             </motion.button>

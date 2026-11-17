@@ -4,7 +4,9 @@ import Link from "next/link";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { modules } from "@/content/catalog";
+import { grammarLessons } from "@/content/grammar";
 import { clearAttempts, summarize, testAttempts, useAttempts } from "@/lib/scores";
+import { useStudied } from "@/lib/studied";
 import { ModuleIcon } from "./module-icon";
 import { ScoreRing } from "./score-ring";
 import { buttonClass } from "./ui";
@@ -17,6 +19,7 @@ export function ProgressView() {
   const [confirming, setConfirming] = useState(false);
   const recent = [...attempts].reverse().slice(0, 12);
   const tests = testAttempts(attempts);
+  const studied = useStudied().filter((id) => grammarLessons.some((lesson) => lesson.id === id)).length;
   const lastTest = tests.at(-1);
   const bestBand = tests.length ? Math.max(...tests.map((attempt) => attempt.bands!.overall)) : null;
 
@@ -72,6 +75,22 @@ export function ProgressView() {
           );
         })}
       </ul>
+
+      <section
+        className="arctic animate-rise flex flex-wrap items-center justify-between gap-4 rounded-3xl p-5 sm:p-7"
+        style={{ animationDelay: "320ms" }}
+      >
+        <div>
+          <h2 className="text-xl font-semibold text-navy-900">Gramática</h2>
+          <p className="text-sm text-navy-500">
+            <span className="font-semibold text-navy-800 tabular-nums">{studied}</span> de {grammarLessons.length} lecciones
+            estudiadas. El modo estudio no suma a tu nota.
+          </p>
+        </div>
+        <Link href="/gramatica" className={buttonClass("soft")}>
+          {studied > 0 ? "Seguir estudiando" : "Empezar a estudiar"}
+        </Link>
+      </section>
 
       <section className="arctic animate-rise rounded-3xl p-5 sm:p-7" style={{ animationDelay: "340ms" }}>
         <div className="flex flex-wrap items-center justify-between gap-4">

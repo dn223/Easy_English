@@ -41,12 +41,12 @@ export function QuestionCard({ name, question, index, chosen, onChoose, checked 
           const state = !checked
             ? selected
               ? "bg-ice-100 shadow-[0_0_0_2px_var(--color-ice-500)] text-navy-900"
-              : "bg-white shadow-[0_0_0_1px_rgb(10_31_60/0.09)] text-navy-700 hover:bg-ice-50"
+              : "bg-white shadow-[0_0_0_1px_var(--edge)] text-navy-700 hover:bg-ice-50"
             : isAnswer
               ? "bg-ok-soft shadow-[0_0_0_2px_var(--color-ok)] text-navy-900"
               : selected
                 ? "bg-bad-soft shadow-[0_0_0_2px_var(--color-bad)] text-navy-900"
-                : "bg-white shadow-[0_0_0_1px_rgb(10_31_60/0.06)] text-navy-400";
+                : "bg-white shadow-[0_0_0_1px_var(--edge)] text-navy-400";
           return (
             <label
               key={option}

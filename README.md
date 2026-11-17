@@ -4,14 +4,16 @@ Web para estudiar inglés por habilidades: **Listening, Reading, Writing y Speak
 
 ## Qué incluye hoy
 
-- **Home** con bienvenida, puntuación global y cuadrícula de módulos.
+- **Home** con bienvenida, banderas de EE. UU. y Reino Unido en 3D de fondo, puntuación global y cuadrícula de módulos.
+- **Gramática (modo estudio)**: 15 lecciones de A2 a B2 con reglas explicadas en español, ejemplos con audio en acento británico o estadounidense, diferencias entre las dos variedades, errores típicos y práctica corregida al momento que no cuenta para la nota.
 - **Reading**: 3 lecturas (A2, B1, B2) con preguntas explicadas.
 - **Listening**: 3 audios (conversación, anuncio, charla) leídos con la voz del navegador en acento estadounidense o británico.
 - **Writing**: ordenar oraciones (corrección automática) y 2 correos con pauta de revisión y respuesta modelo.
 - **Speaking**: repetir frases con reconocimiento de voz y una entrevista de 4 preguntas con grabación y rúbrica.
 - **Simulacro tipo TOEFL**: las cuatro secciones seguidas con los tipos de tarea del TOEFL iBT de 2026, tiempo por sección, Reading y Listening adaptativos en dos etapas y una banda estimada de 1 a 6.
 - **Tutora de conversación**: hablas en inglés con una IA que sigue una situación (cafetería, entrevista, aeropuerto…), responde en voz alta y corrige cada frase.
-- **Mi progreso**: nota global, nota por habilidad, bandas del último simulacro e historial de intentos.
+- **Mi progreso**: nota global, nota por habilidad, lecciones de gramática estudiadas, bandas del último simulacro e historial de intentos.
+- **Modo oscuro**: sigue el tema del sistema y se puede cambiar con el botón de la cabecera.
 
 Todavía no hay login: las notas se guardan en el navegador (`localStorage`) a través de `src/lib/scores.ts`, que es el único punto a cambiar cuando haya cuentas y base de datos.
 

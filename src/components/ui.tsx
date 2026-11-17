@@ -7,7 +7,7 @@ type ButtonVariant = "primary" | "soft" | "ghost" | "onDeep";
 const BUTTON_VARIANTS: Record<ButtonVariant, string> = {
   primary:
     "bg-navy-900 text-white shadow-[0_1px_0_rgb(255_255_255/0.18)_inset,0_10px_20px_-10px_rgb(10_31_60/0.6)] hover:bg-navy-800",
-  soft: "bg-ice-100 text-navy-900 shadow-[0_0_0_1px_rgb(31_147_201/0.18)] hover:bg-ice-200",
+  soft: "bg-ice-100 text-navy-900 shadow-[0_0_0_1px_var(--edge-accent)] hover:bg-ice-200",
   ghost: "text-navy-700 hover:bg-ice-100",
   onDeep: "bg-white text-navy-900 hover:bg-ice-100",
 };

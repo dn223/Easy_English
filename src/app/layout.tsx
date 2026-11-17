@@ -3,6 +3,7 @@ import "@fontsource-variable/sora";
 import "@fontsource-variable/plus-jakarta-sans";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
+import { THEME_SCRIPT } from "@/lib/theme";
 
 export const metadata: Metadata = {
   title: {
@@ -16,12 +17,19 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f6fafd",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f6fafd" },
+    { media: "(prefers-color-scheme: dark)", color: "#06111f" },
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className="h-full">
+    // El script del <head> puede añadir data-theme antes de hidratar.
+    <html lang="es" className="h-full" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className="flex min-h-full flex-col">
         <SiteHeader />
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-20 sm:px-6">{children}</main>

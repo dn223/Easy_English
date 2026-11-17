@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowDown } from "lucide-react";
+import { HeroFlags } from "@/components/hero-flags";
 import { HomeScore } from "@/components/home-score";
 import { ModuleGrid } from "@/components/module-grid";
 import { buttonClass } from "@/components/ui";
@@ -7,18 +8,12 @@ import { buttonClass } from "@/components/ui";
 export default function HomePage() {
   return (
     <>
-      <section className="relative grid items-center gap-10 pt-10 pb-16 sm:pt-16 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14 lg:pb-24">
-        <div className="pointer-events-none absolute inset-x-0 -top-24 -z-10 h-[34rem] overflow-hidden" aria-hidden>
-          <div className="animate-drift absolute top-10 left-[-8%] size-[26rem] rounded-full bg-[radial-gradient(closest-side,rgb(143_211_244/0.55),transparent)]" />
-          <div
-            className="animate-drift absolute top-28 right-[-6%] size-[22rem] rounded-full bg-[radial-gradient(closest-side,rgb(192_227_246/0.8),transparent)]"
-            style={{ animationDelay: "-9s", animationDuration: "28s" }}
-          />
-        </div>
+      <section className="relative isolate grid items-center gap-10 pt-10 pb-16 sm:pt-16 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14 lg:pb-24">
+        <HeroFlags />
 
         <div>
-          <p className="animate-rise inline-flex h-8 items-center rounded-full bg-white px-3.5 text-sm font-semibold text-navy-700 shadow-[0_0_0_1px_rgb(10_31_60/0.07)]">
-            Listening · Reading · Writing · Speaking
+          <p className="animate-rise inline-flex h-8 items-center rounded-full bg-white/85 px-3.5 text-sm font-semibold text-navy-700 shadow-[0_0_0_1px_var(--edge)] backdrop-blur-sm">
+            Inglés británico y estadounidense
           </p>
           <h1
             className="animate-rise mt-5 text-[2.6rem] leading-[1.05] font-semibold text-navy-900 sm:text-6xl"

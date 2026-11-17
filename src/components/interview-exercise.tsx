@@ -237,7 +237,7 @@ export function InterviewExercise({
                     className={`press flex min-h-14 cursor-pointer items-center gap-3 rounded-2xl px-4 py-2.5 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-ice-500 ${
                       active
                         ? "bg-ice-100 shadow-[0_0_0_2px_var(--color-ice-500)]"
-                        : "bg-white shadow-[0_0_0_1px_rgb(10_31_60/0.09)] hover:bg-ice-50"
+                        : "bg-white shadow-[0_0_0_1px_var(--edge)] hover:bg-ice-50"
                     }`}
                   >
                     <input
