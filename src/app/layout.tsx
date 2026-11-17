@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   },
   description:
     "Practica listening, reading, writing y speaking en inglés con ejercicios corregidos y sigue tu puntuación global y por habilidad.",
+  applicationName: "Easy English",
+  appleWebApp: { capable: true, title: "Easy English", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {

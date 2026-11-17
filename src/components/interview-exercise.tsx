@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { INTERVIEW_ACTIVITY_ID, INTERVIEW_SECONDS, interviewQuestions } from "@/content/speaking";
 import { saveAttempt } from "@/lib/scores";
 import { speak, ttsSupported, type Accent } from "@/lib/speech";
+import type { InterviewQuestion } from "@/lib/types";
 import { useClientValue } from "@/lib/use-client-value";
 import { AccentToggle } from "./accent-toggle";
 import { ResultPanel } from "./result-panel";
@@ -19,9 +20,21 @@ const RUBRIC = [
   { score: 25, label: "Apenas pude responder", hint: "Palabras sueltas o me quedé en blanco." },
 ];
 
-export function InterviewExercise() {
+type InterviewExerciseProps = {
+  questions?: InterviewQuestion[];
+  accent?: Accent;
+  /** Si se pasa, la nota (0–100) se entrega aquí en vez de guardarse como práctica. */
+  onFinish?: (score: number) => void;
+};
+
+export function InterviewExercise({
+  questions = interviewQuestions,
+  accent: fixedAccent,
+  onFinish,
+}: InterviewExerciseProps) {
   const canSpeak = useClientValue(ttsSupported, true);
-  const [accent, setAccent] = useState<Accent>("en-US");
+  const [chosenAccent, setAccent] = useState<Accent>("en-US");
+  const accent = fixedAccent ?? chosenAccent;
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<Phase>("ready");
   const [secondsLeft, setSecondsLeft] = useState(INTERVIEW_SECONDS);
@@ -53,8 +66,8 @@ export function InterviewExercise() {
     [],
   );
 
-  const finished = index >= interviewQuestions.length;
-  const question = interviewQuestions[Math.min(index, interviewQuestions.length - 1)];
+  const finished = index >= questions.length;
+  const question = questions[Math.min(index, questions.length - 1)];
 
   const replaceAudio = (url: string | null) => {
     if (urlRef.current) URL.revokeObjectURL(urlRef.current);
@@ -101,13 +114,10 @@ export function InterviewExercise() {
 
   const next = () => {
     const all = [...ratings, rating ?? 0];
-    if (all.length === interviewQuestions.length) {
-      saveAttempt({
-        module: "speaking",
-        activityId: INTERVIEW_ACTIVITY_ID,
-        title: "Take an Interview",
-        score: all.reduce((a, b) => a + b, 0) / all.length,
-      });
+    if (all.length === questions.length) {
+      const score = all.reduce((a, b) => a + b, 0) / all.length;
+      if (onFinish) onFinish(score);
+      else saveAttempt({ module: "speaking", activityId: INTERVIEW_ACTIVITY_ID, title: "Take an Interview", score });
     }
     setRatings(all);
     setRating(null);
@@ -123,6 +133,7 @@ export function InterviewExercise() {
   };
 
   if (finished) {
+    if (onFinish) return null;
     const average = Math.round(ratings.reduce((a, b) => a + b, 0) / ratings.length);
     return (
       <ResultPanel
@@ -138,9 +149,9 @@ export function InterviewExercise() {
     <section className="arctic animate-rise rounded-[28px] p-5 sm:p-8" style={{ animationDelay: "80ms" }}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm font-semibold text-navy-500 tabular-nums">
-          Pregunta {index + 1} de {interviewQuestions.length}
+          Pregunta {index + 1} de {questions.length}
         </p>
-        {canSpeak && (
+        {canSpeak && !fixedAccent && (
           <AccentToggle
             value={accent}
             onChange={(value) => {
@@ -252,7 +263,7 @@ export function InterviewExercise() {
             </div>
           </fieldset>
           <button type="button" onClick={next} disabled={rating === null} className={buttonClass("primary", "h-12 px-6")}>
-            {index + 1 >= interviewQuestions.length ? "Ver mi nota" : "Siguiente pregunta"}
+            {index + 1 >= questions.length ? "Ver mi nota" : "Siguiente pregunta"}
             <ArrowRight className="size-4" aria-hidden />
           </button>
         </div>

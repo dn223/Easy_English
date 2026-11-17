@@ -6,6 +6,7 @@ import { REPEAT_ACTIVITY_ID, repeatItems } from "@/content/speaking";
 import { saveAttempt } from "@/lib/scores";
 import { listenOnce, recognitionSupported, speak, ttsSupported, type Accent } from "@/lib/speech";
 import { matchWords, similarity } from "@/lib/text";
+import type { RepeatItem } from "@/lib/types";
 import { useClientValue } from "@/lib/use-client-value";
 import { AccentToggle } from "./accent-toggle";
 import { ResultPanel } from "./result-panel";
@@ -28,10 +29,18 @@ const ERRORS: Record<string, string> = {
   network: "El reconocimiento de voz necesita conexión y ahora no responde.",
 };
 
-export function RepeatExercise() {
+type RepeatExerciseProps = {
+  items?: RepeatItem[];
+  accent?: Accent;
+  /** Si se pasa, la nota (0–100) se entrega aquí en vez de guardarse como práctica. */
+  onFinish?: (score: number) => void;
+};
+
+export function RepeatExercise({ items = repeatItems, accent: fixedAccent, onFinish }: RepeatExerciseProps) {
   const canRecognize = useClientValue(recognitionSupported, true);
   const canSpeak = useClientValue(ttsSupported, true);
-  const [accent, setAccent] = useState<Accent>("en-US");
+  const [chosenAccent, setAccent] = useState<Accent>("en-US");
+  const accent = fixedAccent ?? chosenAccent;
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<Phase>("idle");
   const [outcome, setOutcome] = useState<Outcome | null>(null);
@@ -43,8 +52,8 @@ export function RepeatExercise() {
 
   useEffect(() => () => stopRef.current(), []);
 
-  const finished = index >= repeatItems.length;
-  const item = repeatItems[Math.min(index, repeatItems.length - 1)];
+  const finished = index >= items.length;
+  const item = items[Math.min(index, items.length - 1)];
   const selfRated = manual || !canRecognize;
   const showText = revealed || outcome !== null || !canSpeak;
 
@@ -83,13 +92,10 @@ export function RepeatExercise() {
   const next = () => {
     halt();
     const all = [...scores, outcome?.score ?? 0];
-    if (all.length === repeatItems.length) {
-      saveAttempt({
-        module: "speaking",
-        activityId: REPEAT_ACTIVITY_ID,
-        title: "Listen and Repeat",
-        score: all.reduce((a, b) => a + b, 0) / all.length,
-      });
+    if (all.length === items.length) {
+      const score = all.reduce((a, b) => a + b, 0) / all.length;
+      if (onFinish) onFinish(score);
+      else saveAttempt({ module: "speaking", activityId: REPEAT_ACTIVITY_ID, title: "Listen and Repeat", score });
     }
     setScores(all);
     setOutcome(null);
@@ -104,11 +110,12 @@ export function RepeatExercise() {
   };
 
   if (finished) {
+    if (onFinish) return null;
     const average = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
     return (
       <ResultPanel
         score={average}
-        detail={`Repetiste ${repeatItems.length} frases. La nota es la media de tu mejor intento en cada una y ya está en tu progreso.`}
+        detail={`Repetiste ${items.length} frases. La nota es la media de tu mejor intento en cada una y ya está en tu progreso.`}
         onRetry={retry}
         back={{ href: "/speaking", label: "Más de Speaking" }}
       />
@@ -119,15 +126,17 @@ export function RepeatExercise() {
     <section className="arctic animate-rise rounded-[28px] p-5 sm:p-8" style={{ animationDelay: "80ms" }}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm font-semibold text-navy-500 tabular-nums">
-          Frase {index + 1} de {repeatItems.length}
+          Frase {index + 1} de {items.length}
         </p>
-        <AccentToggle
-          value={accent}
-          onChange={(value) => {
-            halt();
-            setAccent(value);
-          }}
-        />
+        {!fixedAccent && (
+          <AccentToggle
+            value={accent}
+            onChange={(value) => {
+              halt();
+              setAccent(value);
+            }}
+          />
+        )}
       </div>
 
       <div className="mt-6 rounded-3xl bg-ice-50 p-5 shadow-[inset_0_0_0_1.5px_var(--color-ice-200)] sm:p-6">
@@ -225,7 +234,7 @@ export function RepeatExercise() {
 
       <div className="mt-6">
         <button type="button" onClick={next} disabled={outcome === null} className={buttonClass("primary", "h-12 px-6")}>
-          {index + 1 >= repeatItems.length ? "Ver mi nota" : "Siguiente frase"}
+          {index + 1 >= items.length ? "Ver mi nota" : "Siguiente frase"}
           <ArrowRight className="size-4" aria-hidden />
         </button>
       </div>

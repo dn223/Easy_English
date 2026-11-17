@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { modules } from "@/content/catalog";
-import { clearAttempts, summarize, useAttempts } from "@/lib/scores";
+import { clearAttempts, summarize, testAttempts, useAttempts } from "@/lib/scores";
 import { ModuleIcon } from "./module-icon";
 import { ScoreRing } from "./score-ring";
 import { buttonClass } from "./ui";
@@ -16,6 +16,9 @@ export function ProgressView() {
   const summary = summarize(attempts);
   const [confirming, setConfirming] = useState(false);
   const recent = [...attempts].reverse().slice(0, 12);
+  const tests = testAttempts(attempts);
+  const lastTest = tests.at(-1);
+  const bestBand = tests.length ? Math.max(...tests.map((attempt) => attempt.bands!.overall)) : null;
 
   return (
     <div className="space-y-6">
@@ -70,8 +73,43 @@ export function ProgressView() {
         })}
       </ul>
 
+      <section className="arctic animate-rise rounded-3xl p-5 sm:p-7" style={{ animationDelay: "340ms" }}>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span className="flex size-11 items-center justify-center rounded-2xl bg-navy-900 text-ice-300">
+              <ModuleIcon module="test" className="size-5" />
+            </span>
+            <div>
+              <h2 className="text-xl font-semibold text-navy-900">Simulacro tipo TOEFL</h2>
+              <p className="text-sm text-navy-500">
+                {lastTest && bestBand !== null
+                  ? `Mejor banda ${bestBand.toFixed(1)} de 6 en ${tests.length} ${tests.length === 1 ? "simulacro" : "simulacros"}.`
+                  : "Todavía no has hecho ninguno."}
+              </p>
+            </div>
+          </div>
+          <Link href="/simulacro" className={buttonClass("soft")}>
+            {lastTest ? "Hacer otro" : "Hacer el simulacro"}
+          </Link>
+        </div>
+        {lastTest?.bands && (
+          <dl className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-5">
+            {[
+              { label: "Global", value: lastTest.bands.overall },
+              ...modules.map((module) => ({ label: module.name, value: lastTest.bands![module.id] })),
+            ].map((entry) => (
+              <div key={entry.label} className="rounded-2xl bg-ice-50 px-4 py-3">
+                <dt className="text-sm text-navy-500">{entry.label}</dt>
+                <dd className="font-display text-2xl font-semibold text-navy-900 tabular-nums">{entry.value.toFixed(1)}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+        {lastTest && <p className="mt-3 text-sm text-navy-400">Bandas del último simulacro, de 1 a 6. Son una estimación.</p>}
+      </section>
+
       {recent.length > 0 && (
-        <section className="arctic animate-rise rounded-3xl p-5 sm:p-7" style={{ animationDelay: "380ms" }}>
+        <section className="arctic animate-rise rounded-3xl p-5 sm:p-7" style={{ animationDelay: "400ms" }}>
           <h2 className="text-xl font-semibold text-navy-900">Últimos intentos</h2>
           <ul className="mt-3 divide-y divide-ice-100">
             {recent.map((attempt) => (
@@ -83,7 +121,9 @@ export function ProgressView() {
                   <p className="truncate text-[15px] font-semibold text-navy-900">{attempt.title}</p>
                   <p className="text-sm text-navy-400">{dateFormat.format(new Date(attempt.at))}</p>
                 </div>
-                <p className="font-display text-xl font-semibold text-navy-900 tabular-nums">{attempt.score}</p>
+                <p className="font-display text-xl font-semibold text-navy-900 tabular-nums">
+                  {attempt.bands ? `${attempt.bands.overall.toFixed(1)} / 6` : attempt.score}
+                </p>
               </li>
             ))}
           </ul>

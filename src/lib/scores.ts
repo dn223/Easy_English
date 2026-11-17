@@ -65,6 +65,17 @@ export function clearAttempts() {
   write([]);
 }
 
+export const TEST_ACTIVITY_ID = "test-simulacro";
+
+/** Convierte un porcentaje en banda 1–6 (pasos de 0.5). Es una estimación propia, no la tabla oficial. */
+export function toBand(percent: number): number {
+  return 1 + Math.round(Math.min(100, Math.max(0, percent)) / 10) / 2;
+}
+
+export function testAttempts(attempts: Attempt[]): Attempt[] {
+  return attempts.filter((attempt) => attempt.module === "test" && attempt.bands);
+}
+
 export type ModuleSummary = {
   score: number | null;
   done: number;

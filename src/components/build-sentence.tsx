@@ -6,29 +6,35 @@ import { useState } from "react";
 import { BUILD_ACTIVITY_ID, sentenceItems } from "@/content/writing";
 import { saveAttempt } from "@/lib/scores";
 import { shuffled } from "@/lib/text";
+import type { SentenceItem } from "@/lib/types";
 import { ResultPanel } from "./result-panel";
 import { buttonClass } from "./ui";
 
 type Chip = { key: string; word: string };
 
-function chipsFor(index: number): Chip[] {
-  const item = sentenceItems[index];
+function chipsFor(item: SentenceItem): Chip[] {
   return shuffled(
     item.words.map((word, position) => ({ key: `${item.id}-${position}`, word })),
     item.id,
   );
 }
 
-export function BuildSentence() {
+type BuildSentenceProps = {
+  items?: SentenceItem[];
+  /** Si se pasa, la nota (0–100) se entrega aquí en vez de guardarse como práctica. */
+  onFinish?: (score: number) => void;
+};
+
+export function BuildSentence({ items = sentenceItems, onFinish }: BuildSentenceProps) {
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
   const [placed, setPlaced] = useState<Chip[]>([]);
   const [checked, setChecked] = useState(false);
   const [results, setResults] = useState<boolean[]>([]);
 
-  const finished = results.length === sentenceItems.length && !checked;
-  const item = sentenceItems[Math.min(index, sentenceItems.length - 1)];
-  const bank = chipsFor(Math.min(index, sentenceItems.length - 1)).filter(
+  const finished = results.length === items.length && !checked;
+  const item = items[Math.min(index, items.length - 1)];
+  const bank = chipsFor(item).filter(
     (chip) => !placed.some((entry) => entry.key === chip.key),
   );
   const target = item.words.join(" ");
@@ -43,14 +49,10 @@ export function BuildSentence() {
   const next = () => {
     setChecked(false);
     setPlaced([]);
-    if (index + 1 >= sentenceItems.length) {
-      const correct = results.filter(Boolean).length;
-      saveAttempt({
-        module: "writing",
-        activityId: BUILD_ACTIVITY_ID,
-        title: "Build a Sentence",
-        score: (correct / sentenceItems.length) * 100,
-      });
+    if (index + 1 >= items.length) {
+      const score = (results.filter(Boolean).length / items.length) * 100;
+      if (onFinish) onFinish(score);
+      else saveAttempt({ module: "writing", activityId: BUILD_ACTIVITY_ID, title: "Build a Sentence", score });
     }
     setIndex((current) => current + 1);
   };
@@ -63,11 +65,12 @@ export function BuildSentence() {
   };
 
   if (finished) {
+    if (onFinish) return null;
     const correct = results.filter(Boolean).length;
     return (
       <ResultPanel
-        score={Math.round((correct / sentenceItems.length) * 100)}
-        detail={`Ordenaste bien ${correct} de ${sentenceItems.length} oraciones. La nota ya está en tu progreso.`}
+        score={Math.round((correct / items.length) * 100)}
+        detail={`Ordenaste bien ${correct} de ${items.length} oraciones. La nota ya está en tu progreso.`}
         onRetry={retry}
         back={{ href: "/writing", label: "Más de Writing" }}
       />
@@ -84,17 +87,17 @@ export function BuildSentence() {
           className="h-2 flex-1 overflow-hidden rounded-full bg-ice-100"
           role="progressbar"
           aria-valuemin={0}
-          aria-valuemax={sentenceItems.length}
+          aria-valuemax={items.length}
           aria-valuenow={index}
           aria-label="Avance"
         >
           <div
             className="h-full origin-left rounded-full bg-ice-500 transition-transform duration-500 ease-out-quart"
-            style={{ transform: `scaleX(${index / sentenceItems.length})` }}
+            style={{ transform: `scaleX(${index / items.length})` }}
           />
         </div>
         <p className="text-sm font-semibold text-navy-500 tabular-nums">
-          {index + 1} / {sentenceItems.length}
+          {index + 1} / {items.length}
         </p>
       </div>
 
@@ -176,7 +179,7 @@ export function BuildSentence() {
       <div className="mt-6 flex flex-wrap gap-3">
         {checked ? (
           <button type="button" onClick={next} className={buttonClass("primary", "h-12 px-6")}>
-            {index + 1 >= sentenceItems.length ? "Ver mi nota" : "Siguiente"}
+            {index + 1 >= items.length ? "Ver mi nota" : "Siguiente"}
             <ArrowRight className="size-4" aria-hidden />
           </button>
         ) : (

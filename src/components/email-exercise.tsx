@@ -18,9 +18,18 @@ const SELF_CHECKS = [
 
 type Stage = "writing" | "review" | "done";
 
-export function EmailExercise({ task }: { task: EmailTask }) {
+type EmailExerciseProps = {
+  task: EmailTask;
+  /** Si se pasa, la nota (0–100) se entrega aquí en vez de guardarse como práctica. */
+  onFinish?: (score: number) => void;
+  /** Con true se acabó el tiempo: ya no se puede escribir y se pasa a la revisión. */
+  timeUp?: boolean;
+};
+
+export function EmailExercise({ task, onFinish, timeUp = false }: EmailExerciseProps) {
   const [text, setText] = useState("");
-  const [stage, setStage] = useState<Stage>("writing");
+  const [ownStage, setStage] = useState<Stage>("writing");
+  const stage: Stage = timeUp && ownStage === "writing" ? "review" : ownStage;
   const [ticks, setTicks] = useState<Record<string, boolean>>({});
 
   const total = countWords(text);
@@ -34,6 +43,10 @@ export function EmailExercise({ task }: { task: EmailTask }) {
   const score = (hasGreeting ? 10 : 0) + (hasClosing ? 10 : 0) + lengthPoints + selfPoints;
 
   const finish = () => {
+    if (onFinish) {
+      onFinish(score);
+      return;
+    }
     saveAttempt({ module: "writing", activityId: `writing-${task.id}`, title: task.title, score });
     setStage("done");
   };
@@ -116,7 +129,8 @@ export function EmailExercise({ task }: { task: EmailTask }) {
           <section className="arctic animate-rise rounded-3xl p-5 sm:p-6">
             <h2 className="text-xl font-semibold text-navy-900">Revisa tu correo</h2>
             <p className="mt-1.5 text-[15px] leading-relaxed text-navy-500">
-              Lo de arriba se comprueba solo. Lo de abajo lo marcas tú, comparando con la respuesta modelo.
+              {timeUp && "Se acabó el tiempo. "}Lo de arriba se comprueba solo. Lo de abajo lo marcas tú, comparando con la
+              respuesta modelo.
             </p>
 
             <ul className="mt-4 space-y-2">
@@ -170,11 +184,13 @@ export function EmailExercise({ task }: { task: EmailTask }) {
 
             <div className="mt-5 flex flex-wrap gap-3">
               <button type="button" onClick={finish} className={buttonClass("primary", "h-12 px-6")}>
-                Guardar mi nota
+                {onFinish ? "Continuar" : "Guardar mi nota"}
               </button>
-              <button type="button" onClick={() => setStage("writing")} className={buttonClass("ghost", "h-12")}>
-                Seguir escribiendo
-              </button>
+              {!timeUp && (
+                <button type="button" onClick={() => setStage("writing")} className={buttonClass("ghost", "h-12")}>
+                  Seguir escribiendo
+                </button>
+              )}
             </div>
           </section>
         )}

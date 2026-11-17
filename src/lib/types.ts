@@ -57,11 +57,16 @@ export type RepeatItem = { id: string; text: string };
 
 export type InterviewQuestion = { id: string; text: string; tip: string };
 
+/** Banda estimada de 1 a 6 en pasos de 0.5, como la escala del TOEFL iBT desde 2026. */
+export type Bands = Record<ModuleId, number> & { overall: number };
+
 export type Attempt = {
   id: string;
-  module: ModuleId;
+  module: ModuleId | "test";
   activityId: string;
   title: string;
   score: number;
   at: string;
+  /** Solo en simulacros. */
+  bands?: Bands;
 };
