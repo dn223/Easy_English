@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Easy English
 
-## Getting Started
+Web para estudiar inglés por habilidades: **Listening, Reading, Writing y Speaking**, con ejercicios corregidos al momento y puntuación global e individual. El simulacro tipo TOEFL está previsto como quinto módulo.
 
-First, run the development server:
+## Qué incluye hoy
+
+- **Home** con bienvenida, puntuación global y cuadrícula de módulos.
+- **Reading**: 3 lecturas (A2, B1, B2) con preguntas explicadas.
+- **Listening**: 3 audios (conversación, anuncio, charla) leídos con la voz del navegador en acento estadounidense o británico.
+- **Writing**: ordenar oraciones (corrección automática) y 2 correos con pauta de revisión y respuesta modelo.
+- **Speaking**: repetir frases con reconocimiento de voz y una entrevista de 4 preguntas con grabación y rúbrica.
+- **Mi progreso**: nota global, nota por habilidad e historial de intentos.
+
+Todavía no hay login: las notas se guardan en el navegador (`localStorage`) a través de `src/lib/scores.ts`, que es el único punto a cambiar cuando haya cuentas y base de datos.
+
+## Desarrollo
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre http://localhost:3000. El reconocimiento de voz de Speaking funciona en Chrome, Edge y Safari; en otros navegadores el ejercicio pasa a autoevaluación.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Estructura
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/content/`: todo el contenido de estudio (lecturas, audios, oraciones, correos, preguntas). Para añadir actividades basta editar estos archivos.
+- `src/components/`: ejercicios y piezas de interfaz.
+- `src/lib/`: puntuaciones, voz (síntesis y reconocimiento) y utilidades de texto.
+- `src/app/globals.css`: sistema de diseño "arctic glass" (paleta polar, superficies y animaciones).
 
-## Learn More
+## Stack
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js (App Router) + React + TypeScript, Tailwind CSS y Motion.

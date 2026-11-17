@@ -1,0 +1,187 @@
+import type { ListeningTrack } from "@/lib/types";
+
+export const listeningTracks: ListeningTrack[] = [
+  {
+    id: "library-card",
+    title: "At the Library",
+    level: "A2",
+    minutes: 4,
+    kind: "Conversación",
+    summary: "Una estudiante pide su carné de biblioteca.",
+    lines: [
+      { speaker: "Student", text: "Hi. I'm a new student, and I'd like to get a library card, please." },
+      { speaker: "Librarian", text: "Of course. Do you have your student ID with you?" },
+      { speaker: "Student", text: "Yes, here it is. How many books can I borrow?" },
+      { speaker: "Librarian", text: "You can take six books at a time, and you can keep them for three weeks." },
+      { speaker: "Student", text: "Three weeks. Great. And what happens if I return a book late?" },
+      { speaker: "Librarian", text: "There's a small fee of twenty cents a day for each book. But you can renew your books online before the due date." },
+      { speaker: "Student", text: "That's useful. Is the library open on Sundays?" },
+      { speaker: "Librarian", text: "Only in the afternoon, from one to six. Your card will be ready in five minutes." },
+    ],
+    questions: [
+      {
+        id: "q1",
+        prompt: "What does the student want?",
+        options: ["To return a book", "To get a library card", "To find a study room", "To pay a fee"],
+        answer: 1,
+        explanation: "Lo dice al empezar: “I'd like to get a library card”.",
+      },
+      {
+        id: "q2",
+        prompt: "How long can the student keep the books?",
+        options: ["Six days", "Two weeks", "Three weeks", "Six weeks"],
+        answer: 2,
+        explanation: "“Six books at a time… for three weeks”. Ojo con no confundir el número de libros con el plazo.",
+      },
+      {
+        id: "q3",
+        prompt: "How can the student avoid paying a late fee?",
+        options: [
+          "By renewing the books online before the due date",
+          "By returning books on Sunday",
+          "By borrowing fewer books",
+          "By showing a student ID",
+        ],
+        answer: 0,
+        explanation: "“You can renew your books online before the due date.”",
+      },
+      {
+        id: "q4",
+        prompt: "When is the library open on Sundays?",
+        options: ["All day", "Only in the morning", "From one to six in the afternoon", "It is closed"],
+        answer: 2,
+        explanation: "“Only in the afternoon, from one to six.”",
+      },
+    ],
+  },
+  {
+    id: "campus-announcement",
+    title: "A Change of Plans",
+    level: "B1",
+    minutes: 5,
+    kind: "Anuncio",
+    summary: "Un aviso del campus sobre un cambio de horario.",
+    lines: [
+      {
+        speaker: "Announcer",
+        text: "Good morning, everyone. This is an announcement for all students taking Introduction to Biology. Because of repair work in the science building, Thursday's laboratory session will not take place in room two fourteen. Instead, it has been moved to the main hall of the engineering building, and it will start at ten thirty rather than nine. Please remember to bring your lab coat and your notebook, as usual. The repairs are expected to last two weeks, so next Thursday's session will also be held in the engineering building. If the new time is a problem for you, speak to your instructor before Wednesday. Finally, the short quiz planned for this week has been postponed until the lab returns to its normal room. Thank you for your attention.",
+      },
+    ],
+    questions: [
+      {
+        id: "q1",
+        prompt: "Why has the laboratory session been moved?",
+        options: [
+          "The instructor is ill.",
+          "There is repair work in the science building.",
+          "Too many students signed up.",
+          "The engineering building is closer.",
+        ],
+        answer: 1,
+        explanation: "“Because of repair work in the science building”.",
+      },
+      {
+        id: "q2",
+        prompt: "What time will Thursday's session start?",
+        options: ["At nine", "At nine thirty", "At ten", "At ten thirty"],
+        answer: 3,
+        explanation: "“It will start at ten thirty rather than nine.” “Rather than” marca lo que ya no vale.",
+      },
+      {
+        id: "q3",
+        prompt: "What should students do if the new time is a problem?",
+        options: [
+          "Go to room two fourteen as usual",
+          "Send an email after the session",
+          "Talk to their instructor before Wednesday",
+          "Wait for the next announcement",
+        ],
+        answer: 2,
+        explanation: "“Speak to your instructor before Wednesday.”",
+      },
+      {
+        id: "q4",
+        prompt: "What has happened to this week's quiz?",
+        options: [
+          "It has been cancelled permanently.",
+          "It has been postponed.",
+          "It will be done online.",
+          "It will be longer than usual.",
+        ],
+        answer: 1,
+        explanation: "“Postponed until the lab returns to its normal room”: aplazado, no cancelado.",
+      },
+    ],
+  },
+  {
+    id: "spaced-practice",
+    title: "Remembering What You Study",
+    level: "B2",
+    minutes: 6,
+    kind: "Charla académica",
+    summary: "Una mini clase sobre memoria y repaso espaciado.",
+    lines: [
+      {
+        speaker: "Professor",
+        text: "Today I want to talk about why we forget, and what we can do about it. In the eighteen eighties, the German psychologist Hermann Ebbinghaus tested his own memory by learning lists of meaningless syllables. He found that forgetting is fastest right after learning. Most of what we lose, we lose within the first day, and after that the loss slows down. He drew this pattern as a line that we now call the forgetting curve. Now, here is the useful part. Each time you review the material, the curve becomes flatter. In other words, you forget more slowly after every review. This means that timing matters more than total study time. Studying for three hours the night before an exam feels productive, but most of it disappears within days. If you divide those three hours into six short sessions spread across two weeks, you remember far more. Researchers call this the spacing effect. There is one more ingredient: testing yourself. Reading your notes again feels easy, and that is exactly the problem. Trying to recall an answer without looking is harder, but that effort is what strengthens the memory. So, for next week, do not reread the chapter. Close the book, and write down everything you remember.",
+      },
+    ],
+    questions: [
+      {
+        id: "q1",
+        prompt: "What is the lecture mainly about?",
+        options: [
+          "The life of Hermann Ebbinghaus",
+          "Why people forget and how to study more effectively",
+          "How to read textbooks faster",
+          "The difference between short and long exams",
+        ],
+        answer: 1,
+        explanation: "La profesora lo anuncia al inicio: “why we forget, and what we can do about it”.",
+      },
+      {
+        id: "q2",
+        prompt: "According to the professor, when is forgetting fastest?",
+        options: ["Right after learning", "After one week", "Just before an exam", "After several reviews"],
+        answer: 0,
+        explanation: "“Forgetting is fastest right after learning.”",
+      },
+      {
+        id: "q3",
+        prompt: "What happens to the forgetting curve each time material is reviewed?",
+        options: [
+          "It becomes steeper.",
+          "It disappears completely.",
+          "It becomes flatter, so forgetting slows down.",
+          "It starts again from the beginning.",
+        ],
+        answer: 2,
+        explanation: "“Each time you review the material, the curve becomes flatter.”",
+      },
+      {
+        id: "q4",
+        prompt: "Why does the professor mention studying for three hours the night before an exam?",
+        options: [
+          "To recommend it as an efficient method",
+          "To give an example of study that feels productive but is soon forgotten",
+          "To explain how Ebbinghaus studied",
+          "To show that three hours is not enough",
+        ],
+        answer: 1,
+        explanation: "Es un contraejemplo: “feels productive, but most of it disappears within days”.",
+      },
+      {
+        id: "q5",
+        prompt: "What does the professor ask students to do for next week?",
+        options: [
+          "Reread the chapter twice",
+          "Study for three hours",
+          "Write down what they remember without looking at the book",
+          "Memorise a list of syllables",
+        ],
+        answer: 2,
+        explanation: "“Close the book, and write down everything you remember.”",
+      },
+    ],
+  },
+];
