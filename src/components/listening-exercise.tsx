@@ -2,10 +2,9 @@
 
 import { Pause, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { speak, ttsSupported, type Accent } from "@/lib/speech";
+import { speak, ttsSupported } from "@/lib/speech";
 import type { ListeningTrack } from "@/lib/types";
 import { useClientValue } from "@/lib/use-client-value";
-import { AccentToggle } from "./accent-toggle";
 import { Quiz } from "./quiz";
 
 function Transcript({ track }: { track: ListeningTrack }) {
@@ -29,7 +28,6 @@ function Transcript({ track }: { track: ListeningTrack }) {
 
 export function ListeningExercise({ track }: { track: ListeningTrack }) {
   const supported = useClientValue(ttsSupported, true);
-  const [accent, setAccent] = useState<Accent>("en-US");
   const [slow, setSlow] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [plays, setPlays] = useState(0);
@@ -50,13 +48,8 @@ export function ListeningExercise({ track }: { track: ListeningTrack }) {
     setPlays((count) => count + 1);
     stopRef.current = speak(
       track.lines.map((line) => ({ text: line.text, voiceIndex: speakers.indexOf(line.speaker) })),
-      { accent, rate: slow ? 0.8 : 1, onEnd: () => setPlaying(false) },
+      { rate: slow ? 0.8 : 1, onEnd: () => setPlaying(false) },
     );
-  };
-
-  const changeAccent = (next: Accent) => {
-    stop();
-    setAccent(next);
   };
 
   return (
@@ -89,10 +82,6 @@ export function ListeningExercise({ track }: { track: ListeningTrack }) {
             </div>
 
             <div className="mt-7 space-y-4">
-              <div>
-                <p className="mb-2 text-xs font-semibold tracking-wide text-ice-200 uppercase">Acento</p>
-                <AccentToggle value={accent} onChange={changeAccent} tone="deep" />
-              </div>
               <label className="flex min-h-11 cursor-pointer items-center gap-3 text-[15px] font-medium">
                 <input
                   type="checkbox"
@@ -107,7 +96,7 @@ export function ListeningExercise({ track }: { track: ListeningTrack }) {
               </label>
             </div>
             <p className="mt-5 text-sm leading-relaxed text-ice-200">
-              El audio usa la voz de tu dispositivo. Si no tienes instalada una voz del acento elegido, sonará la voz en
+              El audio usa la voz de tu dispositivo. Si no tienes instalada una voz estadounidense, sonará la voz en
               inglés disponible.
             </p>
             {!readInstead && (

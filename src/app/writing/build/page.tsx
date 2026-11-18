@@ -11,7 +11,7 @@ export default function BuildSentencePage() {
         back={{ href: "/writing", label: "Writing" }}
         eyebrow={
           <>
-            <LevelBadge level="A2–B2" />
+            <LevelBadge level="A2–C1" />
             <Tag>Corrección automática</Tag>
           </>
         }

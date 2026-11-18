@@ -39,10 +39,10 @@ export const tutorScenarios: TutorScenario[] = [
     opener: "Good afternoon. Where are you flying today, and do you have any bags to check?",
   },
   {
-    id: "neighbour",
+    id: "neighbor",
     title: "Conocer a alguien",
     summary: "Una vecina nueva se presenta: conversación social de primer encuentro.",
-    role: "a new neighbour who has just moved into the learner's building and wants to get to know them",
+    role: "a new neighbor who has just moved into the learner's building and wants to get to know them",
     opener: "Hi! I don't think we've met. I'm Ava, and I just moved in upstairs. How long have you lived here?",
   },
 ];

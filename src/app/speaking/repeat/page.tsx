@@ -11,7 +11,7 @@ export default function RepeatPage() {
         back={{ href: "/speaking", label: "Speaking" }}
         eyebrow={
           <>
-            <LevelBadge level="A2–B2" />
+            <LevelBadge level="A2–C1" />
             <Tag>Corrección automática</Tag>
           </>
         }

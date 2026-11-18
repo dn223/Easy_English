@@ -17,8 +17,8 @@ export default function GrammarPage() {
         }
         title="Gramática y reglas"
       >
-        Modo estudio: lecciones para aprender las reglas a tu ritmo, con ejemplos que puedes escuchar, diferencias
-        entre el inglés británico y el estadounidense, y los errores más típicos al hablar español. Aquí no hay notas.
+        Modo estudio: lecciones para aprender cada regla a fondo y a tu ritmo, con ejemplos que puedes escuchar, tablas, los
+        errores más típicos al hablar español y práctica corregida al momento. Aquí no hay notas.
       </PageIntro>
       <GrammarIndex />
     </>

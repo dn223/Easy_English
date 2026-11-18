@@ -93,8 +93,8 @@ export function ModuleGrid() {
             <p className="text-xs font-semibold tracking-wide text-ice-300 uppercase">Modo estudio · sin notas</p>
             <h3 className="mt-1 text-2xl font-semibold">Gramática y reglas</h3>
             <p className="mt-1 max-w-2xl text-[15px] leading-relaxed text-ice-200">
-              Aprende las reglas a tu ritmo: explicaciones claras, ejemplos con audio, británico frente a americano y
-              errores típicos.
+              Aprende las reglas a fondo y a tu ritmo: explicaciones claras, ejemplos con audio, errores típicos y
+              práctica sin nota.
             </p>
           </div>
           <div className="flex items-center gap-4 sm:flex-col sm:items-end">

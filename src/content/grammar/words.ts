@@ -41,13 +41,6 @@ export const wordLessons: GrammarLesson[] = [
         ],
       },
     ],
-    variants: {
-      text: "Con instituciones, el británico a veces omite el artículo donde el americano lo pone. Y para estudiar en la universidad, el americano dice *college* aunque sea una universidad.",
-      pairs: [
-        { uk: "She's in hospital.", us: "She's in the hospital." },
-        { uk: "My son is at university.", us: "My son is in college." },
-      ],
-    },
     mistakes: [
       { wrong: "The life is beautiful.", right: "Life is beautiful.", why: "Hablando en general, sin artículo." },
       { wrong: "She is doctor.", right: "She is a doctor.", why: "Las profesiones llevan a/an." },
@@ -131,15 +124,6 @@ export const wordLessons: GrammarLesson[] = [
         ],
       },
     ],
-    variants: {
-      text: "Algunas expresiones cambian según la variedad.",
-      pairs: [
-        { uk: "at the weekend", us: "on the weekend" },
-        { uk: "Monday to Friday", us: "Monday through Friday" },
-        { uk: "different from / to", us: "different from / than" },
-        { uk: "in a team", us: "on a team" },
-      ],
-    },
     mistakes: [
       { wrong: "in Monday", right: "on Monday", why: "Los días van con on." },
       { wrong: "on the next week", right: "next week", why: "Con next no va preposición." },
@@ -169,10 +153,10 @@ export const wordLessons: GrammarLesson[] = [
       },
       {
         id: "p4",
-        prompt: "What did you do ___? (British English)",
-        options: ["at the weekend", "in the weekend", "on weekend"],
+        prompt: "What did you do ___ the weekend?",
+        options: ["on", "in", "to"],
         answer: 0,
-        explanation: "Británico: at the weekend. Americano: on the weekend.",
+        explanation: "En inglés americano se dice on the weekend.",
       },
     ],
   },
@@ -306,7 +290,7 @@ export const wordLessons: GrammarLesson[] = [
     practice: [
       {
         id: "p1",
-        prompt: "This road is ___ than the motorway.",
+        prompt: "This road is ___ than the highway.",
         options: ["more dangerous", "dangerouser", "most dangerous"],
         answer: 0,
         explanation: "Adjetivo largo: more + adjetivo + than.",

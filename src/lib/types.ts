@@ -53,6 +53,22 @@ export type EmailTask = {
   model: string;
 };
 
+export type DiscussionPost = { name: string; text: string };
+
+/** Tarea "Write for an Academic Discussion": pregunta del profesor, dos respuestas de compañeros y la tuya. */
+export type DiscussionTask = {
+  id: string;
+  title: string;
+  level: Level;
+  minutes: number;
+  summary: string;
+  course: string;
+  professor: DiscussionPost;
+  posts: DiscussionPost[];
+  minWords: number;
+  model: string;
+};
+
 export type RepeatItem = { id: string; text: string };
 
 export type InterviewQuestion = { id: string; text: string; tip: string };

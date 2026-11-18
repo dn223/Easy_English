@@ -11,13 +11,13 @@ export default function InterviewPage() {
         back={{ href: "/speaking", label: "Speaking" }}
         eyebrow={
           <>
-            <LevelBadge level="B1" />
+            <LevelBadge level="B1–C1" />
             <Tag>Con rúbrica</Tag>
           </>
         }
         title="Take an Interview"
       >
-        Cuatro preguntas abiertas. Tienes 45 segundos para responder cada una; después te escuchas y te calificas con
+        Seis preguntas abiertas. Tienes 45 segundos para responder cada una; después te escuchas y te calificas con
         la rúbrica.
       </PageIntro>
       <InterviewExercise />

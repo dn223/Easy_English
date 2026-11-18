@@ -90,22 +90,18 @@ export function HeroFlags() {
   return (
     <div
       aria-hidden
-      // A sangre: ocupa todo el ancho de la ventana aunque el hero esté dentro de una columna centrada.
-      className="pointer-events-none absolute -top-28 left-1/2 -z-10 h-[50rem] w-screen -translate-x-1/2 overflow-hidden sm:h-[46rem]"
-      style={{
-        maskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
-        WebkitMaskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
-      }}
+      // Fijas al fondo de la ventana: el contenido pasa por encima al hacer scroll y ellas se quedan.
+      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
       <div className="absolute inset-0" style={{ opacity: "var(--flag-opacity)" }}>
-        <div className="absolute top-36 -left-[30vw] w-[110vw] sm:top-28 sm:-left-[8vw] sm:w-[64vw] lg:w-[60vw]">
+        <div className="absolute top-28 -left-[30vw] w-[110vw] sm:top-28 sm:-left-[8vw] sm:w-[64vw] lg:w-[60vw]">
           <div className="animate-flag-left" style={{ transformOrigin: "left center" }}>
             <Fabric ratio="1.9 / 1">
               <UsFlag />
             </Fabric>
           </div>
         </div>
-        <div className="absolute top-[30rem] -right-[30vw] w-[110vw] sm:top-16 sm:-right-[8vw] sm:w-[62vw] lg:w-[58vw]">
+        <div className="absolute top-[55%] -right-[30vw] w-[110vw] sm:top-16 sm:-right-[8vw] sm:w-[62vw] lg:w-[58vw]">
           <div className="animate-flag-right" style={{ transformOrigin: "right center" }}>
             <Fabric ratio="2 / 1">
               <UkFlag />
@@ -116,7 +112,10 @@ export function HeroFlags() {
       {/* Velo de hielo: aclara las banderas donde va el titular, para que se lea bien. */}
       <div
         className="absolute inset-0"
-        style={{ background: "radial-gradient(48% 42% at 32% 46%, var(--flag-veil), transparent 85%)" }}
+        style={{
+          background:
+            "radial-gradient(48% 42% at 32% 46%, var(--flag-veil), transparent 85%), linear-gradient(to bottom, transparent 55%, var(--flag-veil))",
+        }}
       />
     </div>
   );

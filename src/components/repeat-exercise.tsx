@@ -4,11 +4,10 @@ import { ArrowRight, Eye, Mic, Square, Volume2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { REPEAT_ACTIVITY_ID, repeatItems } from "@/content/speaking";
 import { saveAttempt } from "@/lib/scores";
-import { listenOnce, recognitionSupported, speak, ttsSupported, type Accent } from "@/lib/speech";
+import { listenOnce, recognitionSupported, speak, ttsSupported } from "@/lib/speech";
 import { matchWords, similarity } from "@/lib/text";
 import type { RepeatItem } from "@/lib/types";
 import { useClientValue } from "@/lib/use-client-value";
-import { AccentToggle } from "./accent-toggle";
 import { ResultPanel } from "./result-panel";
 import { buttonClass } from "./ui";
 
@@ -31,16 +30,13 @@ const ERRORS: Record<string, string> = {
 
 type RepeatExerciseProps = {
   items?: RepeatItem[];
-  accent?: Accent;
   /** Si se pasa, la nota (0–100) se entrega aquí en vez de guardarse como práctica. */
   onFinish?: (score: number) => void;
 };
 
-export function RepeatExercise({ items = repeatItems, accent: fixedAccent, onFinish }: RepeatExerciseProps) {
+export function RepeatExercise({ items = repeatItems, onFinish }: RepeatExerciseProps) {
   const canRecognize = useClientValue(recognitionSupported, true);
   const canSpeak = useClientValue(ttsSupported, true);
-  const [chosenAccent, setAccent] = useState<Accent>("en-US");
-  const accent = fixedAccent ?? chosenAccent;
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<Phase>("idle");
   const [outcome, setOutcome] = useState<Outcome | null>(null);
@@ -66,7 +62,7 @@ export function RepeatExercise({ items = repeatItems, accent: fixedAccent, onFin
   const playSentence = () => {
     halt();
     setPhase("playing");
-    stopRef.current = speak([{ text: item.text }], { accent, onEnd: () => setPhase("idle") });
+    stopRef.current = speak([{ text: item.text }], { onEnd: () => setPhase("idle") });
   };
 
   const record = () => {
@@ -74,7 +70,6 @@ export function RepeatExercise({ items = repeatItems, accent: fixedAccent, onFin
     setError(null);
     setPhase("listening");
     stopRef.current = listenOnce({
-      accent,
       onResult: (alternatives) => {
         const best = alternatives
           .map((heard) => ({ heard, score: similarity(item.text, heard) }))
@@ -128,15 +123,6 @@ export function RepeatExercise({ items = repeatItems, accent: fixedAccent, onFin
         <p className="text-sm font-semibold text-navy-500 tabular-nums">
           Frase {index + 1} de {items.length}
         </p>
-        {!fixedAccent && (
-          <AccentToggle
-            value={accent}
-            onChange={(value) => {
-              halt();
-              setAccent(value);
-            }}
-          />
-        )}
       </div>
 
       <div className="mt-6 rounded-3xl bg-ice-50 p-5 shadow-[inset_0_0_0_1.5px_var(--color-ice-200)] sm:p-6">

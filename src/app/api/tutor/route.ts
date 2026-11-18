@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
+import { createRateLimiter } from "@/lib/rate-limit";
 import {
   TUTOR_MAX_CHARS,
   TUTOR_MAX_TURNS,
@@ -51,21 +52,8 @@ Your reply is read aloud by a speech synthesiser, so write it as plain spoken En
 After your reply, decide whether the learner's last message deserves a correction. Correct real problems with grammar, word choice or word order that a teacher would point out. Leave punctuation, capitalisation and likely transcription slips alone, since the learner did not type them, and return null when the message was fine. When you do correct, give the whole sentence as a fluent speaker would say it and one short sentence in Spanish naming the main fix.`;
 }
 
-// Freno básico contra abuso mientras no haya cuentas: memoria del proceso, por IP.
-const WINDOW_MS = 10 * 60 * 1000;
-const MAX_REQUESTS = 40;
-const hits = new Map<string, number[]>();
-
-function allowed(ip: string): boolean {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((time) => now - time < WINDOW_MS);
-  if (recent.length >= MAX_REQUESTS) {
-    hits.set(ip, recent);
-    return false;
-  }
-  hits.set(ip, [...recent, now]);
-  return true;
-}
+// Freno básico contra abuso mientras no haya cuentas.
+const allowed = createRateLimiter(40, 10 * 60 * 1000);
 
 function fail(error: TutorErrorCode, status: number) {
   return Response.json({ error }, { status });
@@ -78,8 +66,7 @@ export async function POST(request: Request) {
   const system = systemPrompt(parsed.data.scenario, parsed.data.level);
   if (!system) return fail("invalid", 400);
 
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
-  if (!allowed(ip)) return fail("busy", 429);
+  if (!allowed(request)) return fail("busy", 429);
 
   try {
     const client = new Anthropic();

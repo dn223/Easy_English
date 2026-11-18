@@ -8,7 +8,7 @@ import { useStudied } from "@/lib/studied";
 import type { Level } from "@/lib/types";
 import { LevelBadge } from "./ui";
 
-const LEVELS: (Level | "todos")[] = ["todos", "A2", "B1", "B2"];
+const LEVELS: (Level | "todos")[] = ["todos", "A2", "B1", "B2", "C1"];
 
 export function GrammarIndex() {
   const studied = useStudied();

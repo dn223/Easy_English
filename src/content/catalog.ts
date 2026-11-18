@@ -2,7 +2,7 @@ import type { Level, ModuleId } from "@/lib/types";
 import { listeningTracks } from "./listening";
 import { readingPassages } from "./reading";
 import { INTERVIEW_ACTIVITY_ID, REPEAT_ACTIVITY_ID } from "./speaking";
-import { BUILD_ACTIVITY_ID, emailTasks } from "./writing";
+import { BUILD_ACTIVITY_ID, discussionTasks, emailTasks } from "./writing";
 
 export type Activity = {
   id: string;
@@ -10,7 +10,7 @@ export type Activity = {
   title: string;
   summary: string;
   tag: string;
-  level: Level | "A2–B2";
+  level: Level | "A2–C1" | "B1–C1";
   minutes: number;
   href: string;
 };
@@ -28,7 +28,7 @@ export const modules: ModuleInfo[] = [
     id: "listening",
     name: "Listening",
     tagline: "Escucha y comprende",
-    intro: "Conversaciones, anuncios y charlas con acento estadounidense o británico. Escucha, responde y revisa la transcripción al final.",
+    intro: "Conversaciones, anuncios y charlas en inglés estadounidense. Escucha, responde y revisa la transcripción al final.",
     href: "/listening",
   },
   {
@@ -42,7 +42,7 @@ export const modules: ModuleInfo[] = [
     id: "writing",
     name: "Writing",
     tagline: "Escribe con claridad",
-    intro: "Ordena oraciones para fijar la estructura y redacta correos con una pauta de evaluación y una respuesta modelo.",
+    intro: "Ordena oraciones para fijar la estructura, redacta correos y participa en discusiones académicas, con pauta de evaluación y respuesta modelo.",
     href: "/writing",
   },
   {
@@ -79,10 +79,10 @@ export const activities: Activity[] = [
     id: BUILD_ACTIVITY_ID,
     module: "writing",
     title: "Build a Sentence",
-    summary: "Ordena las palabras para responder a cada pregunta.",
+    summary: "Ordena las palabras para responder a cada pregunta. Termina con estructuras de nivel C1.",
     tag: "Corrección automática",
-    level: "A2–B2",
-    minutes: 6,
+    level: "A2–C1",
+    minutes: 10,
     href: "/writing/build",
   },
   ...emailTasks.map((task) => ({
@@ -95,13 +95,23 @@ export const activities: Activity[] = [
     minutes: task.minutes,
     href: `/writing/email/${task.id}`,
   })),
+  ...discussionTasks.map((task) => ({
+    id: `writing-discussion-${task.id}`,
+    module: "writing" as const,
+    title: task.title,
+    summary: task.summary,
+    tag: "Academic Discussion",
+    level: task.level,
+    minutes: task.minutes,
+    href: `/writing/discussion/${task.id}`,
+  })),
   {
     id: REPEAT_ACTIVITY_ID,
     module: "speaking",
     title: "Listen and Repeat",
-    summary: "Escucha cada frase y repítela tal cual.",
+    summary: "Escucha cada frase y repítela tal cual. Las últimas son de nivel avanzado.",
     tag: "Corrección automática",
-    level: "A2–B2",
+    level: "A2–C1",
     minutes: 5,
     href: "/speaking/repeat",
   },
@@ -109,10 +119,10 @@ export const activities: Activity[] = [
     id: INTERVIEW_ACTIVITY_ID,
     module: "speaking",
     title: "Take an Interview",
-    summary: "Cuatro preguntas abiertas, 45 segundos cada una.",
+    summary: "Seis preguntas abiertas, 45 segundos cada una.",
     tag: "Con rúbrica",
-    level: "B1",
-    minutes: 6,
+    level: "B1–C1",
+    minutes: 9,
     href: "/speaking/interview",
   },
 ];

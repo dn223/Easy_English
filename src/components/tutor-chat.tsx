@@ -13,9 +13,8 @@ import {
   type TutorReply,
   type TutorScenario,
 } from "@/content/tutor";
-import { listenOnce, recognitionSupported, speak, ttsSupported, type Accent } from "@/lib/speech";
+import { listenOnce, recognitionSupported, speak, ttsSupported } from "@/lib/speech";
 import { useClientValue } from "@/lib/use-client-value";
-import { AccentToggle } from "./accent-toggle";
 import { buttonClass } from "./ui";
 
 type Turn = {
@@ -51,7 +50,6 @@ export function TutorChat() {
   const [scenario, setScenario] = useState<TutorScenario | null>(null);
   const [picked, setPicked] = useState(tutorScenarios[0].id);
   const [level, setLevel] = useState<TutorLevel>("B1");
-  const [accent, setAccent] = useState<Accent>("en-US");
   const [voiceOn, setVoiceOn] = useState(true);
 
   const [turns, setTurns] = useState<Turn[]>([]);
@@ -80,7 +78,7 @@ export function TutorChat() {
 
   const say = (text: string) => {
     if (!voiceOn || !canSpeak) return;
-    stopSpeechRef.current = speak([{ text }], { accent });
+    stopSpeechRef.current = speak([{ text }]);
   };
 
   const start = () => {
@@ -161,7 +159,6 @@ export function TutorChat() {
     setMicError(null);
     setListening(true);
     stopListenRef.current = listenOnce({
-      accent,
       onResult: (alternatives) => send(alternatives[0] ?? ""),
       onError: (code) => setMicError(MIC_ERRORS[code] ?? "No se pudo usar el micrófono. Puedes escribir tu mensaje."),
       onEnd: () => setListening(false),
@@ -225,10 +222,6 @@ export function TutorChat() {
               ))}
             </div>
           </div>
-          <div>
-            <p className="mb-2 text-sm font-semibold text-navy-500">Acento de {TUTOR_NAME}</p>
-            <AccentToggle value={accent} onChange={setAccent} />
-          </div>
         </div>
 
         <button type="button" onClick={start} className={buttonClass("primary", "mt-7 h-12 px-6")}>
@@ -287,7 +280,7 @@ export function TutorChat() {
                   <button
                     type="button"
                     onClick={() => {
-                      stopSpeechRef.current = speak([{ text: turn.text }], { accent });
+                      stopSpeechRef.current = speak([{ text: turn.text }]);
                     }}
                     className="press mt-1 inline-flex min-h-10 items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-navy-500 hover:bg-ice-100 hover:text-navy-900"
                   >

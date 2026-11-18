@@ -200,9 +200,13 @@
 
 @layer base {
   html {
-    /* Las banderas del hero salen a sangre; esto evita el scroll horizontal. */
     overflow-x: clip;
-    background: var(--color-polar);
+    /* El fondo va en <html> (no en <body>) para que las banderas fijas del inicio queden entre el fondo y el contenido. */
+    background:
+      radial-gradient(60rem 36rem at 12% -10%, var(--glow-1), transparent 62%),
+      radial-gradient(48rem 30rem at 100% 0%, var(--glow-2), transparent 60%),
+      var(--color-polar);
+    background-attachment: fixed;
     color: var(--color-navy-900);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -211,11 +215,6 @@
 
   body {
     font-family: var(--font-sans);
-    background:
-      radial-gradient(60rem 36rem at 12% -10%, var(--glow-1), transparent 62%),
-      radial-gradient(48rem 30rem at 100% 0%, var(--glow-2), transparent 60%),
-      var(--color-polar);
-    background-attachment: fixed;
   }
 
   h1,

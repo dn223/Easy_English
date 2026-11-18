@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/sora";
 import "@fontsource-variable/plus-jakarta-sans";
 import "./globals.css";
+import { OfflineSupport } from "@/components/offline-support";
 import { SiteHeader } from "@/components/site-header";
 import { THEME_SCRIPT } from "@/lib/theme";
 
@@ -34,8 +35,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteHeader />
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-20 sm:px-6">{children}</main>
         <footer className="mx-auto w-full max-w-6xl px-4 pb-8 text-sm text-navy-400 sm:px-6">
-          Easy English · Contenido original. Tu progreso se guarda solo en este navegador.
+          Easy English · Contenido original. Tu progreso se guarda solo en este navegador. Funciona sin conexión una vez instalada.
         </footer>
+        {/* Cambia en cada despliegue para que el service worker vuelva a guardar las páginas nuevas. */}
+        <OfflineSupport version={process.env.VERCEL_GIT_COMMIT_SHA ?? process.env.npm_package_version ?? "dev"} />
       </body>
     </html>
   );

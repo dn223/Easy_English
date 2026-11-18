@@ -13,22 +13,23 @@ import {
   completeWordsText,
   conversation,
   dailyLife,
+  DISCUSSION_SECONDS,
   EMAIL_SECONDS,
   LISTENING_SECONDS,
   READING_SECONDS,
   talkAdvanced,
   talkStandard,
+  testDiscussion,
   testEmail,
   testInterview,
   testRepeat,
   testSentences,
 } from "@/content/test";
 import { saveAttempt, TEST_ACTIVITY_ID, toBand } from "@/lib/scores";
-import type { Accent } from "@/lib/speech";
 import type { Bands, ModuleId } from "@/lib/types";
 import { formatClock, useCountdown } from "@/lib/use-countdown";
-import { AccentToggle } from "./accent-toggle";
 import { BuildSentence } from "./build-sentence";
+import { DiscussionExercise } from "./discussion-exercise";
 import { EmailExercise } from "./email-exercise";
 import { InterviewExercise } from "./interview-exercise";
 import { ModuleIcon } from "./module-icon";
@@ -45,6 +46,7 @@ const STEPS: { id: string; section: ModuleId; task: string }[] = [
   { id: "l-talk", section: "listening", task: "Listen to an Academic Talk" },
   { id: "w-build", section: "writing", task: "Build a Sentence" },
   { id: "w-email", section: "writing", task: "Write an Email" },
+  { id: "w-discussion", section: "writing", task: "Write for an Academic Discussion" },
   { id: "s-repeat", section: "speaking", task: "Listen and Repeat" },
   { id: "s-interview", section: "speaking", task: "Take an Interview" },
 ];
@@ -77,7 +79,7 @@ function grade(points: Points): Result {
       ((get("l-respond") + get("l-conversation") + get("l-talk") * (listeningAdvanced ? ADVANCED_WEIGHT : 1)) /
         listeningMax) *
       100,
-    writing: (get("w-build") + get("w-email")) / 2,
+    writing: (get("w-build") + get("w-email") + get("w-discussion")) / 3,
     speaking: (get("s-repeat") + get("s-interview")) / 2,
   };
 
@@ -91,10 +93,10 @@ function grade(points: Points): Result {
 }
 
 export function TestRunner() {
-  const [accent, setAccent] = useState<Accent>("en-US");
   const [step, setStep] = useState<number | null>(null);
   const [points, setPoints] = useState<Points>({});
   const [emailTimeUp, setEmailTimeUp] = useState(false);
+  const [discussionTimeUp, setDiscussionTimeUp] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
   const countdown = useCountdown();
 
@@ -106,7 +108,8 @@ export function TestRunner() {
     if (next === 0) countdown.start(READING_SECONDS, () => enter(3));
     else if (next === 3) countdown.start(LISTENING_SECONDS, () => enter(6));
     else if (next === 7) countdown.start(EMAIL_SECONDS, () => setEmailTimeUp(true));
-    else if (next === 6 || next === 8) countdown.stop();
+    else if (next === 8) countdown.start(DISCUSSION_SECONDS, () => setDiscussionTimeUp(true));
+    else if (next === 6 || next === 9) countdown.stop();
   };
 
   const score = (id: string) => (value: number) => setPoints((current) => ({ ...current, [id]: value }));
@@ -130,6 +133,7 @@ export function TestRunner() {
   const restart = () => {
     setPoints({});
     setEmailTimeUp(false);
+    setDiscussionTimeUp(false);
     setResult(null);
     setStep(null);
   };
@@ -142,7 +146,7 @@ export function TestRunner() {
         <h2 className="text-2xl font-semibold text-navy-900">Antes de empezar</h2>
         <ul className="mt-4 space-y-3 text-[16px] leading-relaxed text-navy-700">
           {[
-            "Son cuatro secciones seguidas: Reading, Listening, Writing y Speaking. Reserva unos 35 minutos.",
+            "Son cuatro secciones seguidas: Reading, Listening, Writing y Speaking. Reserva unos 50 minutos.",
             "Reading tiene 12 minutos y Listening 10. Si se acaba el tiempo, pasas a la siguiente sección con lo que lleves.",
             "Reading y Listening se adaptan: según cómo vayas en la primera parte, la segunda será estándar o avanzada, y la avanzada puntúa más.",
             "Necesitas altavoz o auriculares y, para Speaking, micrófono.",
@@ -154,10 +158,6 @@ export function TestRunner() {
             </li>
           ))}
         </ul>
-        <div className="mt-6">
-          <p className="mb-2 text-sm font-semibold text-navy-500">Acento del audio</p>
-          <AccentToggle value={accent} onChange={setAccent} />
-        </div>
         <button type="button" onClick={() => enter(0)} className={buttonClass("primary", "mt-7 h-12 px-6")}>
           Empezar el simulacro
         </button>
@@ -240,12 +240,12 @@ export function TestRunner() {
           />
         )}
         {current.id === "l-respond" && (
-          <ChooseResponseStep items={chooseResponse} accent={accent} onScore={score("l-respond")} onNext={next} />
+          <ChooseResponseStep items={chooseResponse} onScore={score("l-respond")} onNext={next} />
         )}
         {current.id === "l-conversation" && (
           <ChoiceStep
             name="conversation"
-            aside={<AudioAside title={conversation.title} lines={conversation.lines} accent={accent} />}
+            aside={<AudioAside title={conversation.title} lines={conversation.lines} />}
             questions={conversation.questions}
             onScore={score("l-conversation")}
             onNext={next}
@@ -254,7 +254,7 @@ export function TestRunner() {
         {current.id === "l-talk" && (
           <ChoiceStep
             name="talk"
-            aside={<AudioAside title={talk.title} lines={talk.lines} accent={accent} />}
+            aside={<AudioAside title={talk.title} lines={talk.lines} />}
             questions={talk.questions}
             onScore={score("l-talk")}
             onNext={next}
@@ -281,11 +281,20 @@ export function TestRunner() {
             }}
           />
         )}
+        {current.id === "w-discussion" && (
+          <DiscussionExercise
+            task={testDiscussion}
+            timeUp={discussionTimeUp}
+            onFinish={(value) => {
+              score("w-discussion")(value);
+              next();
+            }}
+          />
+        )}
         {current.id === "s-repeat" && (
           <div className="mx-auto max-w-3xl">
             <RepeatExercise
               items={testRepeat}
-              accent={accent}
               onFinish={(value) => {
                 score("s-repeat")(value);
                 next();
@@ -295,7 +304,7 @@ export function TestRunner() {
         )}
         {current.id === "s-interview" && (
           <div className="mx-auto max-w-3xl">
-            <InterviewExercise questions={testInterview} accent={accent} onFinish={finish} />
+            <InterviewExercise questions={testInterview} onFinish={finish} />
           </div>
         )}
       </div>

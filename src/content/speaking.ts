@@ -11,6 +11,10 @@ export const repeatItems: RepeatItem[] = [
   { id: "r5", text: "She has lived in this city since she was a child." },
   { id: "r6", text: "If the weather improves, we will walk to the station." },
   { id: "r7", text: "Students who register early can choose their own schedule." },
+  { id: "r8", text: "The results of the survey were more surprising than anyone had expected." },
+  { id: "r9", text: "Had we known about the delay, we would have taken an earlier flight." },
+  { id: "r10", text: "Not only did the new policy reduce costs, but it also improved morale." },
+  { id: "r11", text: "Researchers are still debating whether the effect can be reproduced on a larger scale." },
 ];
 
 export const INTERVIEW_SECONDS = 45;
@@ -35,5 +39,15 @@ export const interviewQuestions: InterviewQuestion[] = [
     id: "i4",
     text: "Do you think technology makes students learn better? Why or why not?",
     tip: "Da tu opinión, un ejemplo concreto y una conclusión corta.",
+  },
+  {
+    id: "i5",
+    text: "Some people believe that university education should be free for everyone. What are the advantages and disadvantages of this idea?",
+    tip: "Habla de ventajas y desventajas antes de dar tu postura final.",
+  },
+  {
+    id: "i6",
+    text: "Describe a decision you made that turned out differently than you expected. What did you learn from it?",
+    tip: "Usa pasado y past perfect: qué esperabas, qué pasó y qué aprendiste.",
   },
 ];

@@ -1,4 +1,5 @@
 import type {
+  DiscussionTask,
   EmailTask,
   InterviewQuestion,
   ListeningLine,
@@ -24,7 +25,7 @@ export const dailyLife = {
   paragraphs: [
     "The main swimming pool will be closed from Monday 3 March to Friday 7 March while the water filters are replaced.",
     "The small training pool stays open during the week. Swimming lessons for children will take place there at 4 p.m. instead of 5 p.m.",
-    "Members who cannot use the centre that week can ask at reception for a free guest pass, valid until the end of April. The gym and the café are not affected.",
+    "Members who cannot use the center that week can ask at reception for a free guest pass, valid until the end of April. The gym and the café are not affected.",
   ],
   questions: [
     {
@@ -33,7 +34,7 @@ export const dailyLife = {
       options: [
         "The water filters are being replaced.",
         "A competition is taking place.",
-        "The centre is short of staff.",
+        "The center is short of staff.",
         "The training pool is being enlarged.",
       ],
       answer: 0,
@@ -43,7 +44,7 @@ export const dailyLife = {
       id: "d2",
       prompt: "What changes for the children's lessons?",
       options: [
-        "They are cancelled for the week.",
+        "They are canceled for the week.",
         "They move to the gym.",
         "They start one hour earlier.",
         "They cost less than usual.",
@@ -72,7 +73,7 @@ export const academicStandard: AcademicPassage = {
   title: "How Honeybees Share Directions",
   paragraphs: [
     "When a honeybee finds a rich patch of flowers, it does not keep the discovery to itself. Back in the dark hive, it performs a series of movements that other bees follow closely. The Austrian scientist Karl von Frisch spent decades studying this behaviour, which is known as the waggle dance, and received a Nobel Prize for his work in 1973.",
-    "In the dance, the bee runs in a straight line while shaking its body from side to side, then circles back and repeats the run. The direction of the straight run carries the first message. Because the bees dance on a vertical surface, they use “up” to stand for the position of the sun: a run pointing straight up means “fly towards the sun”, and a run to the right of vertical means “fly to the right of the sun”.",
+    "In the dance, the bee runs in a straight line while shaking its body from side to side, then circles back and repeats the run. The direction of the straight run carries the first message. Because the bees dance on a vertical surface, they use “up” to stand for the position of the sun: a run pointing straight up means “fly toward the sun”, and a run to the right of vertical means “fly to the right of the sun”.",
     "The second message is distance. The longer the bee shakes during the straight run, the farther away the food is. Bees that follow the dance leave the hive and fly to roughly the right place, even though they have never been there before.",
   ],
   questions: [
@@ -115,7 +116,7 @@ export const academicStandard: AcademicPassage = {
     {
       id: "a4",
       prompt: "The word “rich” in paragraph 1 is closest in meaning to…",
-      options: ["expensive", "full of food", "brightly coloured", "difficult to reach"],
+      options: ["expensive", "full of food", "brightly colored", "difficult to reach"],
       answer: 1,
       explanation: "",
     },
@@ -126,8 +127,15 @@ export const academicStandard: AcademicPassage = {
         "They already know where the flowers are.",
         "They need to see the flowers before leaving.",
         "They can find a place using only the information in the dance.",
-        "They always fly directly towards the sun.",
+        "They always fly directly toward the sun.",
       ],
+      answer: 2,
+      explanation: "",
+    },
+    {
+      id: "a6",
+      prompt: "Which of the following is NOT mentioned as information carried by the waggle dance?",
+      options: ["The direction of the food", "The distance to the food", "The type of flower", "The position relative to the sun"],
       answer: 2,
       explanation: "",
     },
@@ -193,6 +201,18 @@ export const academicAdvanced: AcademicPassage = {
         "The press mainly affected the speed and reach of debate.",
         "The press had little effect on public discussion.",
         "The press made arguments less important than before.",
+      ],
+      answer: 1,
+      explanation: "",
+    },
+    {
+      id: "a6",
+      prompt: "Which sentence best expresses the essential information in “Scholars in different cities could now refer to the same page of the same work”?",
+      options: [
+        "Scholars began to travel more often between cities.",
+        "Identical printed copies allowed scholars in different places to work from exactly the same text.",
+        "Every city printed its own version of important works.",
+        "Scholars stopped reading hand-copied books entirely.",
       ],
       answer: 1,
       explanation: "",
@@ -303,11 +323,11 @@ export const conversation: ListeningPart = {
 };
 
 export const talkStandard: ListeningPart = {
-  title: "Talk: why leaves change colour",
+  title: "Talk: why leaves change color",
   lines: [
     {
       speaker: "Professor",
-      text: "Let's talk about why leaves change colour in autumn. During spring and summer, leaves are green because they are full of chlorophyll, the substance plants use to turn sunlight into food. But leaves also contain yellow and orange pigments. We simply cannot see them, because the green is so strong. When the days get shorter and cooler, the tree stops making chlorophyll. The green slowly disappears, and the yellow and orange that were there all along finally become visible. Red is different. Red pigments are not hidden in the leaf during summer. The tree produces them in autumn, from sugar that is trapped in the leaf. That is why the brightest reds appear after a period of sunny days and cool nights. Sunny days produce a lot of sugar, and cool nights keep it in the leaves.",
+      text: "Let's talk about why leaves change color in the fall. During spring and summer, leaves are green because they are full of chlorophyll, the substance plants use to turn sunlight into food. But leaves also contain yellow and orange pigments. We simply cannot see them, because the green is so strong. When the days get shorter and cooler, the tree stops making chlorophyll. The green slowly disappears, and the yellow and orange that were there all along finally become visible. Red is different. Red pigments are not hidden in the leaf during summer. The tree produces them in autumn, from sugar that is trapped in the leaf. That is why the brightest reds appear after a period of sunny days and cool nights. Sunny days produce a lot of sugar, and cool nights keep it in the leaves.",
     },
   ],
   questions: [
@@ -316,7 +336,7 @@ export const talkStandard: ListeningPart = {
       prompt: "What is the talk mainly about?",
       options: [
         "How trees survive the winter",
-        "Why leaves change colour in autumn",
+        "Why leaves change color in the fall",
         "How plants turn sunlight into food",
         "Which trees have the brightest leaves",
       ],
@@ -340,7 +360,7 @@ export const talkStandard: ListeningPart = {
       prompt: "According to the professor, how are red pigments different?",
       options: [
         "They are present all year.",
-        "They are produced in autumn.",
+        "They are produced in the fall.",
         "They come from the soil.",
         "They disappear when it is sunny.",
       ],
@@ -359,6 +379,18 @@ export const talkStandard: ListeningPart = {
       answer: 2,
       explanation: "",
     },
+    {
+      id: "t5",
+      prompt: "Why does the professor say the yellow and orange colors were “there all along”?",
+      options: [
+        "To show that these pigments are hidden in summer rather than newly produced",
+        "To explain why trees lose their leaves",
+        "To compare leaves from different trees",
+        "To suggest that red leaves are more common",
+      ],
+      answer: 0,
+      explanation: "",
+    },
   ],
 };
 
@@ -367,7 +399,7 @@ export const talkAdvanced: ListeningPart = {
   lines: [
     {
       speaker: "Professor",
-      text: "If you have ever left a city centre on a summer evening and felt the air cool as you reached the countryside, you have experienced what we call the urban heat island. Cities are consistently warmer than the land around them, and the reasons are mostly about materials. Asphalt, brick and dark roofs absorb sunlight during the day instead of reflecting it. Vegetation behaves differently. Plants release water into the air, and that evaporation cools their surroundings, so a district with few trees loses that natural cooling. On top of this, cars and air conditioners release waste heat directly into the streets. Now, here is what surprises most students. The difference between city and countryside is usually greatest at night, not in the afternoon. Buildings and roads store heat all day and release it slowly after sunset, so the city cannot cool down. That matters for health, because during a heatwave it is the hot nights, when the body gets no chance to recover, that are most dangerous. The solutions follow directly from the causes: plant trees, replace dark roofs with reflective or planted ones, and use lighter materials for streets.",
+      text: "If you have ever left a city center on a summer evening and felt the air cool as you reached the countryside, you have experienced what we call the urban heat island. Cities are consistently warmer than the land around them, and the reasons are mostly about materials. Asphalt, brick and dark roofs absorb sunlight during the day instead of reflecting it. Vegetation behaves differently. Plants release water into the air, and that evaporation cools their surroundings, so a district with few trees loses that natural cooling. On top of this, cars and air conditioners release waste heat directly into the streets. Now, here is what surprises most students. The difference between city and countryside is usually greatest at night, not in the afternoon. Buildings and roads store heat all day and release it slowly after sunset, so the city cannot cool down. That matters for health, because during a heatwave it is the hot nights, when the body gets no chance to recover, that are most dangerous. The solutions follow directly from the causes: plant trees, replace dark roofs with reflective or planted ones, and use lighter materials for streets.",
     },
   ],
   questions: [
@@ -419,6 +451,18 @@ export const talkAdvanced: ListeningPart = {
       answer: 0,
       explanation: "",
     },
+    {
+      id: "t5",
+      prompt: "What can be inferred about a city district with many trees?",
+      options: [
+        "It is likely to stay cooler than a district with few trees.",
+        "It produces more waste heat.",
+        "It has more air conditioners.",
+        "It is warmer at night than in the afternoon.",
+      ],
+      answer: 0,
+      explanation: "",
+    },
   ],
 };
 
@@ -451,8 +495,8 @@ export const testEmail: EmailTask = {
   minutes: 7,
   summary: "",
   scenario:
-    "Last weekend you stayed at the Harbour View Hotel. When you got home, you realised you had left your laptop charger in the room. Write an email to the hotel reception.",
-  recipient: "Harbour View Hotel (reception)",
+    "Last weekend you stayed at the Harbor View Hotel. When you got home, you realized you had left your laptop charger in the room. Write an email to the hotel reception.",
+  recipient: "Harbor View Hotel (reception)",
   points: [
     "Say when you stayed and in which room.",
     "Describe the item you left behind.",
@@ -460,7 +504,33 @@ export const testEmail: EmailTask = {
   ],
   minWords: 80,
   model:
-    "Dear Sir or Madam,\n\nI stayed at your hotel last weekend, from Friday 14 to Sunday 16 June, in room 212. When I arrived home, I realised that I had left my laptop charger in the room.\n\nIt is a black charger with a long cable, and I believe it was plugged in next to the desk by the window.\n\nIf you have found it, could you please send it to my home address? I would be happy to pay for the postage, so please let me know the cost and how you would like me to pay.\n\nThank you very much for your help.\n\nBest regards,\nAlex Rivera",
+    "Dear Sir or Madam,\n\nI stayed at your hotel last weekend, from Friday, June 14, to Sunday, June 16, in room 212. When I arrived home, I realized that I had left my laptop charger in the room.\n\nIt is a black charger with a long cable, and I believe it was plugged in next to the desk by the window.\n\nIf you have found it, could you please send it to my home address? I would be happy to pay for the postage, so please let me know the cost and how you would like me to pay.\n\nThank you very much for your help.\n\nBest regards,\nAlex Rivera",
+};
+
+export const testDiscussion: DiscussionTask = {
+  id: "test-online-learning",
+  title: "Write for an Academic Discussion",
+  level: "B2",
+  minutes: 10,
+  summary: "",
+  course: "Sociology",
+  professor: {
+    name: "Dr. Harris",
+    text: "Online courses have become a common alternative to traditional classes. Some people believe that online learning will eventually replace most classroom teaching at universities. Others think face-to-face instruction will always be essential. What is your view? Explain why.",
+  },
+  posts: [
+    {
+      name: "Sofia",
+      text: "I think online learning will replace most lectures. Students can watch recorded classes at their own pace and replay difficult parts. It's also much cheaper for universities, so I believe they will move in that direction.",
+    },
+    {
+      name: "Daniel",
+      text: "I don't agree. Learning isn't just about receiving information. In a classroom you can ask questions immediately, discuss ideas with classmates and build relationships with professors, which is hard to do through a screen.",
+    },
+  ],
+  minWords: 100,
+  model:
+    "I agree with Daniel that discussion and relationships matter, but I think Sofia is right about lectures specifically. Large lectures, where one professor speaks to hundreds of students, are already a one-way experience, so recording them loses very little and gives students the chance to review difficult material. What I believe will happen is a division of roles: basic content will move online, while class time will be used for seminars, labs and projects that require people to work together. For example, in my statistics course last year, the explanations were videos, and our weekly meetings were spent solving problems in small groups. I learned more that way than in any traditional lecture. Therefore, online learning will not replace universities, but it will change what we do when we are in the same room.",
 };
 
 // ── Speaking ───────────────────────────────────────────────────────────────
@@ -497,3 +567,4 @@ export const ADVANCED_WEIGHT = 1.5;
 export const READING_SECONDS = 12 * 60;
 export const LISTENING_SECONDS = 10 * 60;
 export const EMAIL_SECONDS = 7 * 60;
+export const DISCUSSION_SECONDS = 10 * 60;

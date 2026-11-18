@@ -8,12 +8,11 @@ import { buttonClass } from "@/components/ui";
 export default function HomePage() {
   return (
     <>
-      <section className="relative isolate grid items-center gap-10 pt-10 pb-16 sm:pt-16 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14 lg:pb-24">
-        <HeroFlags />
-
+      <HeroFlags />
+      <section className="relative grid items-center gap-10 pt-10 pb-16 sm:pt-16 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14 lg:pb-24">
         <div>
           <p className="animate-rise inline-flex h-8 items-center rounded-full bg-white/85 px-3.5 text-sm font-semibold text-navy-700 shadow-[0_0_0_1px_var(--edge)] backdrop-blur-sm">
-            Inglés británico y estadounidense
+            Listening · Reading · Writing · Speaking
           </p>
           <h1
             className="animate-rise mt-5 text-[2.6rem] leading-[1.05] font-semibold text-navy-900 sm:text-6xl"
@@ -25,8 +24,8 @@ export default function HomePage() {
             className="animate-rise mt-5 max-w-xl text-lg leading-relaxed text-navy-500"
             style={{ animationDelay: "140ms" }}
           >
-            Practica las cuatro habilidades con ejercicios que se corrigen al momento, en inglés británico o
-            estadounidense, y mira cómo sube tu puntuación.
+            Practica las cuatro habilidades con ejercicios que se corrigen al momento, estudia la gramática a fondo y
+            mira cómo sube tu puntuación.
           </p>
           <div className="animate-rise mt-8 flex flex-wrap gap-3" style={{ animationDelay: "210ms" }}>
             <Link href="#modulos" className={buttonClass("primary", "h-12 px-6")}>

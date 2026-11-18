@@ -36,7 +36,7 @@ export const structureLessons: GrammarLesson[] = [
         form: "if + pasado, would + verbo",
         examples: [
           { en: "If I had more time, I would learn Japanese.", es: "Si tuviera más tiempo, aprendería japonés." },
-          { en: "If I were you, I'd apologise.", es: "Yo que tú, pediría perdón." },
+          { en: "If I were you, I'd apologize.", es: "Yo que tú, pediría perdón." },
         ],
       },
       {
@@ -100,7 +100,7 @@ export const structureLessons: GrammarLesson[] = [
         title: "Must y have to: obligación",
         text: "*Must* suele expresar una obligación que siente quien habla o una norma escrita. *Have to* expresa una obligación externa (reglas, trabajo, circunstancias). En pasado solo existe *had to*.",
         examples: [
-          { en: "I must call my mum tonight.", es: "Tengo que llamar a mi madre esta noche." },
+          { en: "I must call my mom tonight.", es: "Tengo que llamar a mi madre esta noche." },
           { en: "I have to wear a uniform at work.", es: "Tengo que llevar uniforme en el trabajo." },
           { en: "We had to wait for an hour.", es: "Tuvimos que esperar una hora." },
         ],
@@ -122,13 +122,6 @@ export const structureLessons: GrammarLesson[] = [
         ],
       },
     ],
-    variants: {
-      text: "En inglés británico informal es muy común *have got to* para la obligación. En inglés americano se dice *have to*, y en conversación muy relajada *gotta*.",
-      pairs: [
-        { uk: "I've got to go now.", us: "I have to go now. (informal: I gotta go.)" },
-        { uk: "Have you got to work tomorrow?", us: "Do you have to work tomorrow?" },
-      ],
-    },
     mistakes: [
       { wrong: "You must to be careful.", right: "You must be careful.", why: "Must va sin to." },
       { wrong: "You mustn't pay, it's free.", right: "You don't have to pay, it's free.", why: "No es una prohibición: simplemente no hace falta." },
@@ -380,13 +373,6 @@ export const structureLessons: GrammarLesson[] = [
         ],
       },
     ],
-    variants: {
-      text: "En las especificativas sobre cosas, el británico usa *which* y *that* casi por igual. Las guías de estilo estadounidenses recomiendan *that* y reservan *which* para las explicativas, con comas.",
-      pairs: [
-        { uk: "The report which you sent was helpful.", us: "The report that you sent was helpful." },
-        { uk: "The car, which is red, is mine.", us: "The car, which is red, is mine." },
-      ],
-    },
     mistakes: [
       { wrong: "The man which called you is here.", right: "The man who called you is here.", why: "Para personas: who (o that)." },
       { wrong: "My mother, that is a teacher, …", right: "My mother, who is a teacher, …", why: "En explicativas (con comas) no se usa that." },
@@ -436,7 +422,7 @@ export const structureLessons: GrammarLesson[] = [
     rules: [
       {
         title: "Verbos seguidos de -ing",
-        text: "Entre los más comunes: *enjoy, finish, avoid, mind, suggest, keep, practise, consider, can't stand*. También después de preposiciones.",
+        text: "Entre los más comunes: *enjoy, finish, avoid, mind, suggest, keep, practice, consider, can't stand*. También después de preposiciones.",
         examples: [
           { en: "I enjoy cooking.", es: "Disfruto cocinando." },
           { en: "Would you mind closing the door?", es: "¿Te importaría cerrar la puerta?" },
@@ -463,13 +449,6 @@ export const structureLessons: GrammarLesson[] = [
         ],
       },
     ],
-    variants: {
-      text: "Con *like, love, hate* y *prefer* las dos formas son correctas. Muchos hablantes británicos usan *-ing* para gustos generales y *to* para hábitos elegidos; en inglés americano *to* es más frecuente en general.",
-      pairs: [
-        { uk: "I like swimming.", us: "I like to swim." },
-        { uk: "She hates getting up early.", us: "She hates to get up early." },
-      ],
-    },
     mistakes: [
       { wrong: "I enjoy to read.", right: "I enjoy reading.", why: "Enjoy va siempre con -ing." },
       { wrong: "I want going home.", right: "I want to go home.", why: "Want va con to + verbo." },

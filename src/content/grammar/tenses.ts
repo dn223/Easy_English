@@ -225,14 +225,6 @@ export const tenseLessons: GrammarLesson[] = [
         },
       },
     ],
-    variants: {
-      text: "En inglés americano es muy común usar el past simple con *just, already* y *yet*, donde el británico prefiere el present perfect. Las dos formas son correctas en su variedad.",
-      pairs: [
-        { uk: "I've just eaten.", us: "I just ate." },
-        { uk: "Have you finished yet?", us: "Did you finish yet?" },
-        { uk: "She's already left.", us: "She already left." },
-      ],
-    },
     mistakes: [
       { wrong: "I have seen him yesterday.", right: "I saw him yesterday.", why: "Yesterday es un tiempo terminado: past simple." },
       { wrong: "I live here since 2020.", right: "I've lived here since 2020.", why: "Situación que empezó en el pasado y sigue: present perfect." },
@@ -263,10 +255,10 @@ export const tenseLessons: GrammarLesson[] = [
       },
       {
         id: "p4",
-        prompt: "In British English, which is more typical?",
-        options: ["I just finished.", "I've just finished.", "I've just finish."],
+        prompt: "___ you ever ___ sushi?",
+        options: ["Did / eat", "Have / eaten", "Have / ate"],
         answer: 1,
-        explanation: "El británico prefiere present perfect con just; el americano acepta también “I just finished”.",
+        explanation: "Experiencia de vida con ever: present perfect (have + participio eaten).",
       },
     ],
   },
@@ -309,13 +301,6 @@ export const tenseLessons: GrammarLesson[] = [
         ],
       },
     ],
-    variants: {
-      text: "*Shall* con I y we se usa en inglés británico para ofrecer o sugerir. En inglés americano suena formal o anticuado, y se prefiere *Should I…?* o *Do you want me to…?*",
-      pairs: [
-        { uk: "Shall I open the window?", us: "Should I open the window?" },
-        { uk: "Shall we go?", us: "Do you want to go? / Should we go?" },
-      ],
-    },
     mistakes: [
       { wrong: "I will to call you.", right: "I will call you.", why: "Will va seguido del verbo sin to." },
       { wrong: "Tomorrow I go to the dentist at 3.", right: "Tomorrow I'm going to the dentist at 3.", why: "Cita acordada: present continuous." },
@@ -345,10 +330,10 @@ export const tenseLessons: GrammarLesson[] = [
       },
       {
         id: "p4",
-        prompt: "In British English, a polite offer:",
-        options: ["Will I carry that?", "Shall I carry that?", "Am I carrying that?"],
-        answer: 1,
-        explanation: "Shall I…? para ofrecer, típico del británico.",
+        prompt: "I've decided. I ___ a new laptop next month.",
+        options: ["'m going to buy", "'ll buy", "buy"],
+        answer: 0,
+        explanation: "Plan decidido antes de hablar: going to.",
       },
     ],
   },

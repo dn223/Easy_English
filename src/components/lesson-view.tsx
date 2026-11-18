@@ -4,40 +4,39 @@ import Link from "next/link";
 import { ArrowRight, Check, CircleCheck, RotateCcw, Square, Volume2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { GrammarLesson } from "@/content/grammar";
-import { speak, ttsSupported, type Accent } from "@/lib/speech";
+import { speak, ttsSupported } from "@/lib/speech";
 import { setStudied, useStudied } from "@/lib/studied";
 import { useClientValue } from "@/lib/use-client-value";
-import { AccentToggle } from "./accent-toggle";
 import { QuestionCard } from "./quiz";
 import { RichText } from "./rich-text";
 import { buttonClass } from "./ui";
 
-type Speaker = { say: (text: string, key: string, accent?: Accent) => void; playing: string | null };
+type Speaker = { say: (text: string, key: string) => void; playing: string | null };
 
-function useSpeaker(accent: Accent): Speaker {
+function useSpeaker(): Speaker {
   const [playing, setPlaying] = useState<string | null>(null);
   const stopRef = useRef<() => void>(() => {});
   useEffect(() => () => stopRef.current(), []);
 
-  const say = (text: string, key: string, override?: Accent) => {
+  const say = (text: string, key: string) => {
     stopRef.current();
     if (playing === key) {
       setPlaying(null);
       return;
     }
     setPlaying(key);
-    stopRef.current = speak([{ text }], { accent: override ?? accent, rate: 0.95, onEnd: () => setPlaying(null) });
+    stopRef.current = speak([{ text }], { rate: 0.95, onEnd: () => setPlaying(null) });
   };
   return { say, playing };
 }
 
-function SpeakButton({ speaker, text, id, accent, label }: { speaker: Speaker; text: string; id: string; accent?: Accent; label?: string }) {
+function SpeakButton({ speaker, text, id }: { speaker: Speaker; text: string; id: string }) {
   const active = speaker.playing === id;
   return (
     <button
       type="button"
-      onClick={() => speaker.say(text, id, accent)}
-      aria-label={active ? "Detener" : `Escuchar${label ? ` en ${label}` : ""}: ${text}`}
+      onClick={() => speaker.say(text, id)}
+      aria-label={active ? "Detener" : `Escuchar: ${text}`}
       className="press -my-1 flex size-10 shrink-0 items-center justify-center rounded-full text-navy-500 hover:bg-ice-100 hover:text-navy-900"
     >
       {active ? <Square className="size-3.5" aria-hidden /> : <Volume2 className="size-[18px]" aria-hidden />}
@@ -112,12 +111,10 @@ type LessonViewProps = {
 
 export function LessonView({ lesson, next }: LessonViewProps) {
   const canSpeak = useClientValue(ttsSupported, true);
-  const [accent, setAccent] = useState<Accent>("en-US");
-  const speaker = useSpeaker(accent);
+  const speaker = useSpeaker();
 
   const toc = [
     ...lesson.rules.map((rule, index) => ({ id: `regla-${index + 1}`, label: rule.title })),
-    ...(lesson.variants ? [{ id: "variantes", label: "Británico y americano" }] : []),
     { id: "errores", label: "Errores comunes" },
     { id: "practica", label: "Práctica" },
   ];
@@ -150,12 +147,6 @@ export function LessonView({ lesson, next }: LessonViewProps) {
           <p className="text-[17px] leading-relaxed text-navy-700">
             <RichText text={lesson.intro} />
           </p>
-          {canSpeak && (
-            <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-ice-200 pt-4">
-              <p className="text-sm font-semibold text-navy-500">Acento de los ejemplos</p>
-              <AccentToggle value={accent} onChange={setAccent} />
-            </div>
-          )}
         </section>
 
         {lesson.rules.map((rule, index) => (
@@ -176,42 +167,15 @@ export function LessonView({ lesson, next }: LessonViewProps) {
             <ul className="arctic divide-y divide-ice-200 rounded-3xl px-2 py-1">
               {rule.examples.map((example, exampleIndex) => {
                 const key = `${index}-${exampleIndex}`;
-                // Los ejemplos “UK: … · US: …” se leen cada uno con su acento.
-                const parts = example.en.match(/^UK: (.+?) · US: (.+)$/);
                 return (
                   <li key={key} className="flex items-start gap-2 px-3 py-3">
                     <div className="min-w-0 flex-1">
-                      {parts ? (
-                        <div className="space-y-1.5" lang="en">
-                          {[
-                            { label: "UK", text: parts[1], voice: "en-GB" as const },
-                            { label: "US", text: parts[2], voice: "en-US" as const },
-                          ].map((variant) => (
-                            <p key={variant.label} className="flex items-start gap-2 text-[17px] font-semibold text-navy-900">
-                              <span className="mt-0.5 inline-flex h-6 shrink-0 items-center rounded-full bg-ice-100 px-2 text-xs font-bold text-navy-700">
-                                {variant.label}
-                              </span>
-                              <span className="flex-1">{variant.text}</span>
-                              {canSpeak && (
-                                <SpeakButton
-                                  speaker={speaker}
-                                  text={variant.text}
-                                  id={`${key}-${variant.label}`}
-                                  accent={variant.voice}
-                                  label={variant.label === "UK" ? "británico" : "americano"}
-                                />
-                              )}
-                            </p>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-[17px] font-semibold text-navy-900" lang="en">
-                          {example.en}
-                        </p>
-                      )}
+                      <p className="text-[17px] font-semibold text-navy-900" lang="en">
+                        {example.en}
+                      </p>
                       {example.es && <p className="mt-1 text-[15px] text-navy-500">{example.es}</p>}
                     </div>
-                    {canSpeak && !parts && <SpeakButton speaker={speaker} text={example.en} id={key} />}
+                    {canSpeak && <SpeakButton speaker={speaker} text={example.en} id={key} />}
                   </li>
                 );
               })}
@@ -245,44 +209,6 @@ export function LessonView({ lesson, next }: LessonViewProps) {
           </section>
         ))}
 
-        {lesson.variants && (
-          <section className="space-y-4">
-            <SectionTitle id="variantes">Británico y americano</SectionTitle>
-            <p className="max-w-3xl text-[17px] leading-relaxed text-navy-700">
-              <RichText text={lesson.variants.text} />
-            </p>
-            <div className="arctic overflow-hidden rounded-3xl">
-              <div className="grid grid-cols-2 border-b border-ice-200 text-sm font-semibold text-navy-500">
-                <p className="px-4 py-3">Británico (UK)</p>
-                <p className="border-l border-ice-200 px-4 py-3">Americano (US)</p>
-              </div>
-              {lesson.variants.pairs.map((pair, index) => (
-                <div key={index} className="grid grid-cols-2 border-b border-ice-100 last:border-0" lang="en">
-                  {[
-                    { text: pair.uk, voice: "en-GB" as const, label: "británico" },
-                    { text: pair.us, voice: "en-US" as const, label: "americano" },
-                  ].map((side, sideIndex) => (
-                    <div
-                      key={side.voice}
-                      className={`flex items-start gap-1 px-4 py-3 ${sideIndex === 1 ? "border-l border-ice-200" : ""}`}
-                    >
-                      <p className="flex-1 text-[16px] font-semibold text-navy-900">{side.text}</p>
-                      {canSpeak && (
-                        <SpeakButton
-                          speaker={speaker}
-                          text={side.text}
-                          id={`v-${index}-${side.voice}`}
-                          accent={side.voice}
-                          label={side.label}
-                        />
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
 
         <section className="space-y-4">
           <SectionTitle id="errores">Errores comunes</SectionTitle>

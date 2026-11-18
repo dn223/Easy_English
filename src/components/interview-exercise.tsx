@@ -4,10 +4,9 @@ import { ArrowRight, Mic, Square, Volume2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { INTERVIEW_ACTIVITY_ID, INTERVIEW_SECONDS, interviewQuestions } from "@/content/speaking";
 import { saveAttempt } from "@/lib/scores";
-import { speak, ttsSupported, type Accent } from "@/lib/speech";
+import { speak, ttsSupported } from "@/lib/speech";
 import type { InterviewQuestion } from "@/lib/types";
 import { useClientValue } from "@/lib/use-client-value";
-import { AccentToggle } from "./accent-toggle";
 import { ResultPanel } from "./result-panel";
 import { buttonClass } from "./ui";
 
@@ -22,19 +21,15 @@ const RUBRIC = [
 
 type InterviewExerciseProps = {
   questions?: InterviewQuestion[];
-  accent?: Accent;
   /** Si se pasa, la nota (0–100) se entrega aquí en vez de guardarse como práctica. */
   onFinish?: (score: number) => void;
 };
 
 export function InterviewExercise({
   questions = interviewQuestions,
-  accent: fixedAccent,
   onFinish,
 }: InterviewExerciseProps) {
   const canSpeak = useClientValue(ttsSupported, true);
-  const [chosenAccent, setAccent] = useState<Accent>("en-US");
-  const accent = fixedAccent ?? chosenAccent;
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<Phase>("ready");
   const [secondsLeft, setSecondsLeft] = useState(INTERVIEW_SECONDS);
@@ -138,7 +133,7 @@ export function InterviewExercise({
     return (
       <ResultPanel
         score={average}
-        detail="Nota orientativa: es la media de cómo calificaste tus cuatro respuestas con la rúbrica. Ya está en tu progreso."
+        detail="Nota orientativa: es la media de cómo calificaste tus respuestas con la rúbrica. Ya está en tu progreso."
         onRetry={retry}
         back={{ href: "/speaking", label: "Más de Speaking" }}
       />
@@ -151,15 +146,6 @@ export function InterviewExercise({
         <p className="text-sm font-semibold text-navy-500 tabular-nums">
           Pregunta {index + 1} de {questions.length}
         </p>
-        {canSpeak && !fixedAccent && (
-          <AccentToggle
-            value={accent}
-            onChange={(value) => {
-              stopSpeechRef.current();
-              setAccent(value);
-            }}
-          />
-        )}
       </div>
 
       <p className="mt-6 font-display text-2xl leading-snug font-semibold text-navy-900" lang="en">
@@ -172,7 +158,7 @@ export function InterviewExercise({
           <button
             type="button"
             onClick={() => {
-              stopSpeechRef.current = speak([{ text: question.text }], { accent });
+              stopSpeechRef.current = speak([{ text: question.text }]);
             }}
             className={buttonClass("soft", "h-12 px-6")}
           >

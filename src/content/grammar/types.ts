@@ -12,7 +12,7 @@ export type GrammarRule = {
   table?: { head: string[]; rows: string[][] };
 };
 
-export type GrammarCategory = "tiempos" | "estructuras" | "palabras" | "variantes";
+export type GrammarCategory = "tiempos" | "estructuras" | "palabras";
 
 export type GrammarLesson = {
   id: string;
@@ -25,7 +25,6 @@ export type GrammarLesson = {
   summary: string;
   intro: string;
   rules: GrammarRule[];
-  variants?: { text: string; pairs: { uk: string; us: string }[] };
   mistakes: { wrong: string; right: string; why: string }[];
   practice: Question[];
 };

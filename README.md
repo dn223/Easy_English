@@ -4,16 +4,19 @@ Web para estudiar inglés por habilidades: **Listening, Reading, Writing y Speak
 
 ## Qué incluye hoy
 
-- **Home** con bienvenida, banderas de EE. UU. y Reino Unido en 3D de fondo, puntuación global y cuadrícula de módulos.
-- **Gramática (modo estudio)**: 15 lecciones de A2 a B2 con reglas explicadas en español, ejemplos con audio en acento británico o estadounidense, diferencias entre las dos variedades, errores típicos y práctica corregida al momento que no cuenta para la nota.
-- **Reading**: 3 lecturas (A2, B1, B2) con preguntas explicadas.
-- **Listening**: 3 audios (conversación, anuncio, charla) leídos con la voz del navegador en acento estadounidense o británico.
-- **Writing**: ordenar oraciones (corrección automática) y 2 correos con pauta de revisión y respuesta modelo.
-- **Speaking**: repetir frases con reconocimiento de voz y una entrevista de 4 preguntas con grabación y rúbrica.
-- **Simulacro tipo TOEFL**: las cuatro secciones seguidas con los tipos de tarea del TOEFL iBT de 2026, tiempo por sección, Reading y Listening adaptativos en dos etapas y una banda estimada de 1 a 6.
+- **Home** con bienvenida, banderas de EE. UU. y Reino Unido en 3D fijas al fondo, puntuación global y cuadrícula de módulos.
+- **Gramática (modo estudio)**: 26 lecciones de A2 a C1 con reglas explicadas en español, tablas, ejemplos con audio, errores típicos y práctica corregida al momento que no cuenta para la nota.
+- **Reading**: 6 lecturas de A2 a C1, con preguntas tipo TOEFL (detalle, vocabulario, inferencia, propósito del autor, "todas excepto", simplificación de oraciones).
+- **Listening**: 6 audios de A2 a C1 (conversaciones, anuncio y charlas académicas) en inglés estadounidense.
+- **Writing**: ordenar oraciones (hasta C1), 3 correos y 2 discusiones académicas, con pauta de revisión y respuesta modelo.
+- **Speaking**: repetir 11 frases con reconocimiento de voz y una entrevista de 6 preguntas con grabación y rúbrica.
+- **Simulacro tipo TOEFL**: las cuatro secciones seguidas, incluida "Write for an Academic Discussion", con los tipos de tarea del TOEFL iBT de 2026, tiempo por sección, Reading y Listening adaptativos en dos etapas y una banda estimada de 1 a 6.
 - **Tutora de conversación**: hablas en inglés con una IA que sigue una situación (cafetería, entrevista, aeropuerto…), responde en voz alta y corrige cada frase.
 - **Mi progreso**: nota global, nota por habilidad, lecciones de gramática estudiadas, bandas del último simulacro e historial de intentos.
 - **Modo oscuro**: sigue el tema del sistema y se puede cambiar con el botón de la cabecera.
+- **Sin conexión**: un service worker guarda todas las páginas; una vez abierta con internet, la app funciona sin red (salvo la tutora, las voces naturales y el reconocimiento de voz).
+
+Todo el audio y el contenido están en inglés estadounidense.
 
 Todavía no hay login: las notas se guardan en el navegador (`localStorage`) a través de `src/lib/scores.ts`, que es el único punto a cambiar cuando haya cuentas y base de datos.
 
@@ -37,6 +40,10 @@ cp .env.example .env.local
 Sin clave, el resto de la app funciona igual y la tutora avisa de que falta configurarla. El modelo se puede cambiar con `TUTOR_MODEL`.
 
 El endpoint todavía no pide login: solo tiene un límite básico por IP y de longitud. Antes de publicar la app con la clave puesta conviene añadir cuentas o un límite más estricto, porque cada mensaje consume de tu saldo de la API.
+
+### Activar las voces naturales
+
+Por defecto el audio usa la voz del navegador. Para voces más naturales, la app usa Google Cloud Text-to-Speech desde el servidor (`src/app/api/tts/route.ts`): añade `GOOGLE_TTS_API_KEY` en `.env.local` (o en las variables de entorno de Vercel). Google ofrece un tramo gratuito mensual; revisa sus precios actuales. Cada frase se guarda en caché, así que la misma frase no se paga dos veces. Las voces se cambian con `TTS_VOICES`.
 
 ### Sobre el simulacro
 

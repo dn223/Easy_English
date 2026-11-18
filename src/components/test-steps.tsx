@@ -3,7 +3,7 @@
 import { ArrowRight, Square, Volume2 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { ResponseItem } from "@/content/test";
-import { speak, ttsSupported, type Accent, type SpokenLine } from "@/lib/speech";
+import { speak, ttsSupported, type SpokenLine } from "@/lib/speech";
 import type { ListeningLine, Question } from "@/lib/types";
 import { useClientValue } from "@/lib/use-client-value";
 import { QuestionCard } from "./quiz";
@@ -148,7 +148,7 @@ export function ReadingAside({ heading, title, paragraphs }: { heading?: string;
 
 // ── Audio ──────────────────────────────────────────────────────────────────
 
-function usePlayer(lines: SpokenLine[], accent: Accent) {
+function usePlayer(lines: SpokenLine[]) {
   const [playing, setPlaying] = useState(false);
   const stopRef = useRef<() => void>(() => {});
   useEffect(() => () => stopRef.current(), []);
@@ -160,7 +160,7 @@ function usePlayer(lines: SpokenLine[], accent: Accent) {
       return;
     }
     setPlaying(true);
-    stopRef.current = speak(lines, { accent, onEnd: () => setPlaying(false) });
+    stopRef.current = speak(lines, { onEnd: () => setPlaying(false) });
   };
   return { playing, toggle };
 }
@@ -170,9 +170,9 @@ function toSpoken(lines: ListeningLine[]): SpokenLine[] {
   return lines.map((line) => ({ text: line.text, voiceIndex: speakers.indexOf(line.speaker) }));
 }
 
-export function AudioAside({ title, lines, accent }: { title: string; lines: ListeningLine[]; accent: Accent }) {
+export function AudioAside({ title, lines }: { title: string; lines: ListeningLine[] }) {
   const supported = useClientValue(ttsSupported, true);
-  const { playing, toggle } = usePlayer(toSpoken(lines), accent);
+  const { playing, toggle } = usePlayer(toSpoken(lines));
   const [reading, setReading] = useState(false);
   const showText = reading || !supported;
   const dialogue = new Set(lines.map((line) => line.speaker)).size > 1;
@@ -217,9 +217,9 @@ export function AudioAside({ title, lines, accent }: { title: string; lines: Lis
   );
 }
 
-function ResponsePrompt({ item, number, accent }: { item: ResponseItem; number: number; accent: Accent }) {
+function ResponsePrompt({ item, number }: { item: ResponseItem; number: number }) {
   const supported = useClientValue(ttsSupported, true);
-  const { playing, toggle } = usePlayer([{ text: item.said }], accent);
+  const { playing, toggle } = usePlayer([{ text: item.said }]);
   return supported ? (
     <button type="button" onClick={toggle} className={buttonClass("soft")}>
       {playing ? <Square className="size-4" aria-hidden /> : <Volume2 className="size-5" aria-hidden />}
@@ -234,10 +234,9 @@ function ResponsePrompt({ item, number, accent }: { item: ResponseItem; number: 
 
 export function ChooseResponseStep({
   items,
-  accent,
   onScore,
   onNext,
-}: StepProps & { items: ResponseItem[]; accent: Accent }) {
+}: StepProps & { items: ResponseItem[] }) {
   const [answers, setAnswers] = useState<Record<string, number>>({});
 
   const choose = (id: string, option: number) => {
@@ -251,7 +250,7 @@ export function ChooseResponseStep({
       <p className="text-[15px] text-navy-500">Escucha cada frase y elige la respuesta más natural.</p>
       {items.map((item, index) => (
         <div key={item.id} className="space-y-3">
-          <ResponsePrompt item={item} number={index + 1} accent={accent} />
+          <ResponsePrompt item={item} number={index + 1} />
           <div lang="en">
             <QuestionCard
               name={`respond-${item.id}`}
